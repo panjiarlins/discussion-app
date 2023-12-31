@@ -1,3 +1,5 @@
-export default function Home(): JSX.Element {
-  return <main>Hello World</main>
+import { redirect } from 'next/navigation'
+
+export default function Home(): void {
+  redirect('/home')
 }
