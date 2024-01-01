@@ -15,8 +15,8 @@ import {
 import { Input } from '@/components/ui/input'
 import Link from 'next/link'
 import { signIn } from 'next-auth/react'
-import { useToast } from '@/components/ui/use-toast'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -25,7 +25,6 @@ const formSchema = z.object({
 
 export default function LoginPage(): React.JSX.Element {
   const router = useRouter()
-  const { toast } = useToast()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -38,20 +37,19 @@ export default function LoginPage(): React.JSX.Element {
   const onSubmit = async (
     values: z.infer<typeof formSchema>
   ): Promise<void> => {
-    console.log(values)
+    const toastId = toast.loading('Loading....', {
+      duration: Infinity,
+      dismissible: true,
+    })
     const result = await signIn('credentials', {
       redirect: false,
       email: values.email,
       password: values.password,
     })
-
     if (!result?.ok) {
-      toast({
-        title: 'Error',
-        description: result?.error,
-        variant: 'destructive',
-      })
+      toast.error(result?.error ?? 'Error!', { id: toastId, duration: 4000 })
     } else {
+      toast.success('Login Success!', { id: toastId, duration: 4000 })
       router.push('/home')
     }
   }

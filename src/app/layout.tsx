@@ -3,7 +3,7 @@ import { Quicksand } from 'next/font/google'
 import './globals.css'
 import AuthProvider from '@/contexts/auth-provider'
 import { cn } from '@/lib/utils'
-import { Toaster } from '@/components/ui/toaster'
+import { Toaster } from '@/components/ui/sonner'
 
 const quicksand = Quicksand({ subsets: ['latin'] })
 
@@ -26,7 +26,7 @@ export default function RootLayout({
         )}
       >
         <AuthProvider>{children}</AuthProvider>
-        <Toaster />
+        <Toaster richColors closeButton position="top-center" />
       </body>
     </html>
   )
