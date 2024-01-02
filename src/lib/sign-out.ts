@@ -1,7 +1,7 @@
 import { signOut as nextAuthSignOut } from 'next-auth/react'
 import { toast } from 'sonner'
 
-export default async function signOut(): Promise<void> {
+export default async function signOut() {
   const toastId = toast.loading('Loading....', {
     duration: Infinity,
     dismissible: true,

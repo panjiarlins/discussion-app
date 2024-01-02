@@ -14,22 +14,24 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import Link from 'next/link'
-import { signIn } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
+import axios from 'axios'
+import { useRouter } from 'next/navigation'
 import { useCallback } from 'react'
 
 const formSchema = z.object({
+  name: z.string().min(3),
   email: z.string().email(),
   password: z.string().min(6),
 })
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const router = useRouter()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      name: '',
       email: '',
       password: '',
     },
@@ -41,17 +43,28 @@ export default function LoginPage() {
         duration: Infinity,
         dismissible: true,
       })
-      const result = await signIn('credentials', {
-        redirect: false,
-        email: values.email,
-        password: values.password,
-      })
-      if (!result?.ok) {
-        toast.error(result?.error ?? 'Error!', { id: toastId, duration: 4000 })
-      } else {
+      try {
+        await axios.post('/api/auth/register', {
+          name: values.name,
+          email: values.email,
+          password: values.password,
+        })
         form.reset()
-        toast.success('Login Successful!', { id: toastId, duration: 4000 })
-        router.push('/home')
+        router.push('/login')
+        toast.success('Registration successful!', {
+          id: toastId,
+          duration: 4000,
+        })
+      } catch (error: any) {
+        toast.error(
+          (error.response?.data?.message as string) ??
+            (error?.message as string) ??
+            'Error!',
+          {
+            id: toastId,
+            duration: 4000,
+          }
+        )
       }
     },
     [form, router]
@@ -62,6 +75,24 @@ export default function LoginPage() {
       <p className="pb-6 text-4xl font-extrabold">Join Today.</p>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="name"
+                    type="text"
+                    className="rounded-md"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="email"
@@ -99,14 +130,14 @@ export default function LoginPage() {
             )}
           />
           <Button type="submit" className="w-full font-semibold rounded-full">
-            Log in
+            Create account
           </Button>
         </form>
       </Form>
       <div className="mt-16 space-y-4">
-        <div className="text-xl font-bold">Don&apos;t have an account?</div>
+        <div className="text-xl font-bold">Already have an account?</div>
         <Button className="w-full font-semibold rounded-full" asChild>
-          <Link href="/register">Sign up</Link>
+          <Link href="/login">Sign in</Link>
         </Button>
       </div>
     </section>
