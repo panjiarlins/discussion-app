@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
 import * as React from 'react'
 import type * as LabelPrimitive from '@radix-ui/react-label'
@@ -96,7 +95,7 @@ const FormLabel = React.forwardRef<
   return (
     <Label
       ref={ref}
-      className={cn(error && 'text-destructive', className as string)}
+      className={cn(error && 'text-destructive', className)}
       htmlFor={formItemId}
       {...props}
     />

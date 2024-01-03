@@ -16,12 +16,12 @@ export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
-}): React.JSX.Element {
+}) {
   return (
     <html lang="en" className="scroll-smooth">
       <body
         className={cn(
-          'min-w-[280px] min-h-screen antialiased ',
+          'min-w-[280px] min-h-screen antialiased',
           quicksand.className
         )}
       >
