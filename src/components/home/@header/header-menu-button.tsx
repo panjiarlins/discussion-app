@@ -16,18 +16,15 @@ export default function HeaderMenuButton({
   children,
   tooltip,
   text,
-  boldOnPath = '',
+  href = '',
 }: {
   children: React.ReactElement<SVGSVGElement>
   tooltip: React.ReactNode
   text: string
-  boldOnPath?: string
+  href?: string
 }) {
   const pathname = usePathname()
-  const isBold = useMemo(
-    () => pathname.startsWith(boldOnPath),
-    [pathname, boldOnPath]
-  )
+  const isBold = useMemo(() => pathname.startsWith(href), [pathname, href])
 
   return (
     <TooltipProvider>
@@ -44,7 +41,7 @@ export default function HeaderMenuButton({
                 : '[&>svg]:stroke-1 [&>span]:font-medium'
             )}
           >
-            <Link href={boldOnPath}>
+            <Link href={href}>
               {children}
               <span className="text-xl max-xl:hidden">{text}</span>
             </Link>

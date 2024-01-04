@@ -1,3 +1,3 @@
 export default function HomePage() {
-  return <section className="flex-1 col-span-2 bg-slate-200">HomePage</section>
+  return <section className="lg:col-span-3 bg-slate-200">HomePage</section>
 }

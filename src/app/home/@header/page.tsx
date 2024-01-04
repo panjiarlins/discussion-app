@@ -1,4 +1,4 @@
-import HeaderMenuButton from '@/components/header/header-menu-button'
+import HeaderMenuButton from '@/components/home/@header/header-menu-button'
 import { Button } from '@/components/ui/button'
 import Logo from '../../../../public/_049fd1fb-231f-4466-9919-f4ac28359ee2.jpeg'
 import Image from 'next/image'
@@ -13,7 +13,7 @@ export default async function Header() {
       <Button size="icon" className="mt-1 mb-6 overflow-hidden rounded-full ">
         <Image src={Logo} alt="logo" className="size-full" />
       </Button>
-      <HeaderMenuButton text="Home" tooltip="Home" boldOnPath="/home">
+      <HeaderMenuButton text="Home" tooltip="Home" href="/home">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -33,7 +33,7 @@ export default async function Header() {
         <HeaderMenuButton
           text="Profile"
           tooltip="Profile"
-          boldOnPath={`/${session.user.id}`}
+          href={`/${session.user.id}`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
