@@ -17,21 +17,27 @@ export default function HeaderMenuButton({
   tooltip,
   text,
   href = '',
+  onClick,
 }: {
   children: React.ReactElement<SVGSVGElement>
   tooltip: React.ReactNode
   text: string
   href?: string
+  onClick?: React.MouseEventHandler<HTMLButtonElement>
 }) {
   const pathname = usePathname()
-  const isBold = useMemo(() => pathname.startsWith(href), [pathname, href])
+  const isBold = useMemo(
+    () => (href ? pathname.startsWith(href) : false),
+    [pathname, href]
+  )
 
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
-            asChild
+            asChild={!onClick}
+            onClick={onClick}
             size="icon"
             variant="ghost"
             className={cn(
@@ -41,10 +47,17 @@ export default function HeaderMenuButton({
                 : '[&>svg]:stroke-1 [&>span]:font-medium'
             )}
           >
-            <Link href={href}>
-              {children}
-              <span className="text-xl max-xl:hidden">{text}</span>
-            </Link>
+            {onClick ? (
+              <>
+                {children}
+                <span className="text-xl max-xl:hidden">{text}</span>
+              </>
+            ) : (
+              <Link href={href}>
+                {children}
+                <span className="text-xl max-xl:hidden">{text}</span>
+              </Link>
+            )}
           </Button>
         </TooltipTrigger>
         <TooltipContent>{tooltip}</TooltipContent>
