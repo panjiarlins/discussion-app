@@ -11,12 +11,12 @@ export default async function Header() {
   const session = await getServerSession(options)
 
   return (
-    <header className="flex flex-col items-start">
+    <header className="flex flex-col items-start p-2">
       <Button
         size="icon"
-        className="mt-1 mb-6 overflow-hidden rounded-full self-center"
+        className="self-center mt-1 mb-6 overflow-hidden rounded-full"
       >
-        <Image src={Logo} alt="logo" className="size-full" />
+        <Image src={Logo} alt="logo" className="size-full" priority />
       </Button>
       <HomeButton />
       {!!session && (

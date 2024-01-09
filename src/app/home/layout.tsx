@@ -10,7 +10,7 @@ export default function HomeLayout({
   return (
     <div className="flex flex-row sm:container">
       {header}
-      <main className="lg:grid lg:grid-cols-4 flex-1">
+      <main className="flex-1 lg:grid lg:grid-cols-4">
         {children}
         {sidebar}
       </main>
