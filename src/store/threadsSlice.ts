@@ -1,18 +1,7 @@
+import api from '@/lib/api'
+import { type Threads } from '@/types/thread'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import axios from 'axios'
 import { toast } from 'sonner'
-
-export type Threads = Array<{
-  id: string
-  title: string
-  body: string
-  category: string
-  createdAt: string
-  ownerId: string
-  upVotesBy: string[]
-  downVotesBy: string[]
-  totalComments: number
-}>
 
 interface InitialState {
   loading: boolean
@@ -35,9 +24,7 @@ export const getThreads = createAsyncThunk<Threads>(
     })
     try {
       // await new Promise((resolve) => setTimeout(resolve, 5000))
-      const { data } = await axios.get(
-        `${process.env.NEXT_PUBLIC_BASE_API}/threads`
-      )
+      const { data } = await api.get('/threads')
 
       //   toast.success('Success!', { id: toastId, duration: 4000 })
       toast.dismiss(toastId)

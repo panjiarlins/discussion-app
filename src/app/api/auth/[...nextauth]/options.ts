@@ -1,4 +1,5 @@
-import axios, { AxiosError } from 'axios'
+import api from '@/lib/api'
+import { AxiosError } from 'axios'
 import type { NextAuthOptions } from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
 
@@ -21,7 +22,7 @@ export const options: NextAuthOptions = {
             data: {
               data: { token },
             },
-          } = await axios.post(`${process.env.NEXT_PUBLIC_BASE_API}/login`, {
+          } = await api.post('/login', {
             email: credentials?.email,
             password: credentials?.password,
           })
@@ -30,7 +31,7 @@ export const options: NextAuthOptions = {
             data: {
               data: { user },
             },
-          } = await axios.get(`${process.env.NEXT_PUBLIC_BASE_API}/users/me`, {
+          } = await api.get('/users/me', {
             headers: { Authorization: `Bearer ${token}` },
           })
 

@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { type Threads } from '@/store/threadsSlice'
+import { type Threads } from '@/types/thread'
 import { useSession } from 'next-auth/react'
 
 export default function UpVoteButton({
