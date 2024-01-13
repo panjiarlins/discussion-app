@@ -1,3 +1,6 @@
+import CommentButton from '../home/comment-button'
+import DownVoteThreadButton from '../home/down-vote-thread-button'
+import UpVoteThreadButton from '../home/up-vote-thread-button'
 import { Button } from '../ui/button'
 import {
   Card,
@@ -7,8 +10,6 @@ import {
   CardHeader,
   CardTitle,
 } from '../ui/card'
-import UpVoteButton from '../home/up-vote-button'
-import DownVoteButton from '../home/down-vote-button'
 import { type ThreadDetail } from '@/types/thread'
 import Image from 'next/image'
 
@@ -26,7 +27,7 @@ export default function ThreadItem({ thread }: { thread: ThreadDetail }) {
             height={0}
             className="rounded-full size-8"
           />
-          <div className="font-semibold">{thread.owner.name}</div>
+          <span className="font-semibold">{thread.owner.name}</span>
         </div>
         <CardTitle>{thread.title}</CardTitle>
         <CardDescription>
@@ -46,8 +47,9 @@ export default function ThreadItem({ thread }: { thread: ThreadDetail }) {
         <div dangerouslySetInnerHTML={{ __html: thread.body }} />
       </CardContent>
       <CardFooter>
-        <UpVoteButton upVotesBy={thread.upVotesBy} />
-        <DownVoteButton downVotesBy={thread.downVotesBy} />
+        <UpVoteThreadButton upVotesBy={thread.upVotesBy} />
+        <DownVoteThreadButton downVotesBy={thread.downVotesBy} />
+        <CommentButton totalComments={thread.comments.length} />
       </CardFooter>
     </Card>
   )

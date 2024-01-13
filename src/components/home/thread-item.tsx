@@ -9,9 +9,9 @@ import {
   CardTitle,
 } from '../ui/card'
 import CommentButton from './comment-button'
-import DownVoteButton from './down-vote-button'
-import UpVoteButton from './up-vote-button'
 import Link from 'next/link'
+import UpVoteThreadButton from './up-vote-thread-button'
+import DownVoteThreadButton from './down-vote-thread-button'
 
 export default function ThreadItem({ thread }: { thread: Threads[number] }) {
   return (
@@ -40,8 +40,8 @@ export default function ThreadItem({ thread }: { thread: Threads[number] }) {
         />
       </CardContent>
       <CardFooter>
-        <UpVoteButton upVotesBy={thread.upVotesBy} />
-        <DownVoteButton downVotesBy={thread.downVotesBy} />
+        <UpVoteThreadButton upVotesBy={thread.upVotesBy} />
+        <DownVoteThreadButton downVotesBy={thread.downVotesBy} />
         <CommentButton totalComments={thread.totalComments} />
       </CardFooter>
     </Card>
