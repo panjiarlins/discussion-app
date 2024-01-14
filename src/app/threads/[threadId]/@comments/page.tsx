@@ -1,9 +1,9 @@
-import ThreadItem from '@/components/threads/thread-item'
+import CommentItem from '@/components/threads/comment-item'
 import api from '@/lib/api'
 import { type ThreadDetail } from '@/types/thread'
 import { notFound } from 'next/navigation'
 
-export default async function ThreadDetailPage({
+export default async function Comments({
   params: { threadId },
 }: {
   params: { threadId: string }
@@ -19,7 +19,13 @@ export default async function ThreadDetailPage({
       }
     } = await api.get(`/threads/${threadId}`)
 
-    return <ThreadItem thread={detailThread} />
+    return (
+      <div className="flex flex-col">
+        {detailThread.comments.map((comment) => (
+          <CommentItem key={comment.id} comment={comment} />
+        ))}
+      </div>
+    )
   } catch (error) {
     notFound()
   }
