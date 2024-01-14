@@ -47,8 +47,11 @@ export default function ThreadItem({ thread }: { thread: ThreadDetail }) {
         <div dangerouslySetInnerHTML={{ __html: thread.body }} />
       </CardContent>
       <CardFooter>
-        <UpVoteThreadButton upVotesBy={thread.upVotesBy} />
-        <DownVoteThreadButton downVotesBy={thread.downVotesBy} />
+        <UpVoteThreadButton threadId={thread.id} upVotesBy={thread.upVotesBy} />
+        <DownVoteThreadButton
+          threadId={thread.id}
+          downVotesBy={thread.downVotesBy}
+        />
         <CommentButton totalComments={thread.comments.length} />
       </CardFooter>
     </Card>

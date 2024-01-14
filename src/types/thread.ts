@@ -36,3 +36,10 @@ export interface ThreadDetail {
     downVotesBy: string[]
   }>
 }
+
+export interface ThreadVote {
+  id: string
+  userId: string
+  threadId: string
+  voteType: 1 | 0 | -1
+}

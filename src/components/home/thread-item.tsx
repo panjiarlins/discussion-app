@@ -40,8 +40,11 @@ export default function ThreadItem({ thread }: { thread: Threads[number] }) {
         />
       </CardContent>
       <CardFooter>
-        <UpVoteThreadButton upVotesBy={thread.upVotesBy} />
-        <DownVoteThreadButton downVotesBy={thread.downVotesBy} />
+        <UpVoteThreadButton threadId={thread.id} upVotesBy={thread.upVotesBy} />
+        <DownVoteThreadButton
+          threadId={thread.id}
+          downVotesBy={thread.downVotesBy}
+        />
         <CommentButton totalComments={thread.totalComments} />
       </CardFooter>
     </Card>
