@@ -12,6 +12,7 @@ import CommentButton from './comment-button'
 import Link from 'next/link'
 import UpVoteThreadButton from './up-vote-thread-button'
 import DownVoteThreadButton from './down-vote-thread-button'
+import xss from 'xss'
 
 export default function ThreadItem({ thread }: { thread: Threads[number] }) {
   return (
@@ -35,7 +36,7 @@ export default function ThreadItem({ thread }: { thread: Threads[number] }) {
       </CardHeader>
       <CardContent>
         <div
-          dangerouslySetInnerHTML={{ __html: thread.body }}
+          dangerouslySetInnerHTML={{ __html: xss(thread.body) }}
           className="line-clamp-4"
         />
       </CardContent>

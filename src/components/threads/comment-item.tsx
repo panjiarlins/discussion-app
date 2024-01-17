@@ -4,6 +4,7 @@ import Image from 'next/image'
 import UpVoteCommentButton from './up-vote-comment-button'
 import DownVoteCommentButton from './down-vote-comment-button'
 import timeSince from '@/utils/time-since'
+import xss from 'xss'
 
 export default function CommentItem({
   comment,
@@ -30,7 +31,7 @@ export default function CommentItem({
         </div>
       </CardHeader>
       <CardContent>
-        <div dangerouslySetInnerHTML={{ __html: comment.content }} />
+        <div dangerouslySetInnerHTML={{ __html: xss(comment.content) }} />
       </CardContent>
       <CardFooter>
         <UpVoteCommentButton upVotesBy={comment.upVotesBy} />

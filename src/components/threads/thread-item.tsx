@@ -12,6 +12,7 @@ import {
 } from '../ui/card'
 import { type ThreadDetail } from '@/types/thread'
 import Image from 'next/image'
+import xss from 'xss'
 
 export default function ThreadItem({ thread }: { thread: ThreadDetail }) {
   return (
@@ -44,7 +45,7 @@ export default function ThreadItem({ thread }: { thread: ThreadDetail }) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div dangerouslySetInnerHTML={{ __html: thread.body }} />
+        <div dangerouslySetInnerHTML={{ __html: xss(thread.body) }} />
       </CardContent>
       <CardFooter>
         <UpVoteThreadButton threadId={thread.id} upVotesBy={thread.upVotesBy} />

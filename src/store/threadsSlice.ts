@@ -1,5 +1,6 @@
 import api from '@/lib/api'
 import { type ThreadVote, type Threads } from '@/types/thread'
+import getAsyncThunkErrorMessage from '@/utils/error-handler'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getSession } from 'next-auth/react'
 import { toast } from 'sonner'
@@ -31,7 +32,7 @@ export const getThreads = createAsyncThunk<Threads>(
       toast.dismiss(toastId)
       return fulfillWithValue(data.data.threads)
     } catch (error: any) {
-      const message = (error?.message as string) ?? 'Error!'
+      const message = getAsyncThunkErrorMessage(error)
       toast.error(message, { id: toastId, duration: 4000 })
       return rejectWithValue(message)
     }
@@ -53,7 +54,30 @@ export const voteThread = createAsyncThunk<
       )
       return fulfillWithValue(data.data.vote)
     } catch (error: any) {
-      const message = (error?.message as string) ?? 'Error!'
+      const message = getAsyncThunkErrorMessage(error)
+      toast.error(message)
+      return rejectWithValue(message)
+    }
+  }
+)
+
+export const createThread = createAsyncThunk<
+  Threads[number],
+  { title: string; body: string; category?: string }
+>(
+  'threads/createThread',
+  async ({ title, body, category }, { fulfillWithValue, rejectWithValue }) => {
+    try {
+      const session = await getSession()
+      const { data } = await api.post(
+        '/threads',
+        { title, body, category },
+        { headers: { Authorization: `Bearer ${session?.user.token}` } }
+      )
+      return fulfillWithValue(data.data.thread)
+    } catch (error: any) {
+      const message = getAsyncThunkErrorMessage(error)
+      toast.error(message)
       return rejectWithValue(message)
     }
   }
@@ -67,6 +91,7 @@ const threadsSlice = createSlice({
     // getThreads
     builder.addCase(getThreads.pending, (state) => {
       state.loading = true
+      state.error = ''
     })
     builder.addCase(getThreads.rejected, (state, action) => {
       state.loading = false
@@ -80,6 +105,7 @@ const threadsSlice = createSlice({
     // voteThread
     builder.addCase(voteThread.pending, (state) => {
       state.loading = true
+      state.error = ''
     })
     builder.addCase(voteThread.rejected, (state, action) => {
       state.loading = false
@@ -117,6 +143,20 @@ const threadsSlice = createSlice({
             state.threads[threadIdx].downVotesBy.splice(downVoteIdx, 1)
         }
       }
+    })
+
+    // createThread
+    builder.addCase(createThread.pending, (state) => {
+      state.loading = true
+      state.error = ''
+    })
+    builder.addCase(createThread.rejected, (state, action) => {
+      state.loading = false
+      state.error = action.payload as string
+    })
+    builder.addCase(createThread.fulfilled, (state, action) => {
+      state.loading = false
+      state.threads.unshift(action.payload)
     })
   },
 })
