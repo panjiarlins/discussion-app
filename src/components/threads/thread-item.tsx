@@ -1,6 +1,7 @@
 import CommentButton from '../home/comment-button'
 import DownVoteThreadButton from '../home/down-vote-thread-button'
 import UpVoteThreadButton from '../home/up-vote-thread-button'
+import LoadingBar from '../ui/loading-bar'
 import { Button } from '../ui/button'
 import {
   Card,
@@ -16,7 +17,8 @@ import xss from 'xss'
 
 export default function ThreadItem({ thread }: { thread: ThreadDetail }) {
   return (
-    <Card className="rounded-none">
+    <Card className="relative rounded-none">
+      <LoadingBar scope={`threads/voteThread/${thread.id}`} />
       <CardHeader>
         <div className="flex flex-row items-center gap-4 pb-4">
           <Image

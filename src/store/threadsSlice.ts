@@ -3,38 +3,22 @@ import { type ThreadVote, type Threads } from '@/types/thread'
 import getAsyncThunkErrorMessage from '@/utils/error-handler'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getSession } from 'next-auth/react'
+import { hideLoading, showLoading } from 'react-redux-loading-bar'
 import { toast } from 'sonner'
-
-interface InitialState {
-  loading: boolean
-  threads: Threads
-  error: string
-}
-
-const initialState: InitialState = {
-  loading: false,
-  threads: [],
-  error: '',
-}
 
 export const getThreads = createAsyncThunk<Threads>(
   'threads/getThreads',
-  async (_, { fulfillWithValue, rejectWithValue }) => {
-    const toastId = toast.loading('Loading....', {
-      duration: Infinity,
-      dismissible: true,
-    })
+  async (_, { dispatch, fulfillWithValue, rejectWithValue }) => {
     try {
-      // await new Promise((resolve) => setTimeout(resolve, 5000))
+      dispatch(showLoading('threads/getThreads'))
       const { data } = await api.get('/threads')
-
-      //   toast.success('Success!', { id: toastId, duration: 4000 })
-      toast.dismiss(toastId)
       return fulfillWithValue(data.data.threads)
     } catch (error: any) {
       const message = getAsyncThunkErrorMessage(error)
-      toast.error(message, { id: toastId, duration: 4000 })
+      toast.error(message)
       return rejectWithValue(message)
+    } finally {
+      dispatch(hideLoading('threads/getThreads'))
     }
   }
 )
@@ -44,8 +28,12 @@ export const voteThread = createAsyncThunk<
   { threadId: string; voteType: 'up-vote' | 'down-vote' | 'neutral-vote' }
 >(
   'threads/voteThread',
-  async ({ threadId, voteType }, { fulfillWithValue, rejectWithValue }) => {
+  async (
+    { threadId, voteType },
+    { dispatch, fulfillWithValue, rejectWithValue }
+  ) => {
     try {
+      dispatch(showLoading(`threads/voteThread/${threadId}`))
       const session = await getSession()
       const { data } = await api.post(
         `/threads/${threadId}/${voteType}`,
@@ -57,6 +45,8 @@ export const voteThread = createAsyncThunk<
       const message = getAsyncThunkErrorMessage(error)
       toast.error(message)
       return rejectWithValue(message)
+    } finally {
+      dispatch(hideLoading(`threads/voteThread/${threadId}`))
     }
   }
 )
@@ -66,8 +56,12 @@ export const createThread = createAsyncThunk<
   { title: string; body: string; category?: string }
 >(
   'threads/createThread',
-  async ({ title, body, category }, { fulfillWithValue, rejectWithValue }) => {
+  async (
+    { title, body, category },
+    { dispatch, fulfillWithValue, rejectWithValue }
+  ) => {
     try {
+      dispatch(showLoading('threads/createThread'))
       const session = await getSession()
       const { data } = await api.post(
         '/threads',
@@ -79,13 +73,19 @@ export const createThread = createAsyncThunk<
       const message = getAsyncThunkErrorMessage(error)
       toast.error(message)
       return rejectWithValue(message)
+    } finally {
+      dispatch(hideLoading('threads/createThread'))
     }
   }
 )
 
 const threadsSlice = createSlice({
   name: 'threads',
-  initialState,
+  initialState: {
+    loading: false as boolean,
+    threads: [] as Threads,
+    error: '' as string,
+  },
   reducers: {},
   extraReducers(builder) {
     // getThreads

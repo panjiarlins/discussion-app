@@ -1,5 +1,6 @@
 import { type Threads } from '@/types/thread'
 import { Button } from '../ui/button'
+import LoadingBar from '../ui/loading-bar'
 import {
   Card,
   CardContent,
@@ -16,7 +17,8 @@ import xss from 'xss'
 
 export default function ThreadItem({ thread }: { thread: Threads[number] }) {
   return (
-    <Card className="rounded-none">
+    <Card className="relative rounded-none">
+      <LoadingBar scope={`threads/voteThread/${thread.id}`} />
       <CardHeader>
         <CardTitle>
           <Link href={`/threads/${thread.id}`}>{thread.title}</Link>

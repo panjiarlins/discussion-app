@@ -20,6 +20,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import xss from 'xss'
 import { useAppDispatch } from '@/store/hooks'
 import { createThread } from '@/store/threadsSlice'
+import LoadingBar from '@/components/ui/loading-bar'
 
 function getPlainText(richText: string) {
   const parser = new DOMParser()
@@ -82,7 +83,8 @@ export default function NewThreadInput() {
   )
 
   return (
-    <Card className="rounded-none">
+    <Card className="relative rounded-none">
+      <LoadingBar scope="threads/createThread" />
       <CardHeader>
         <CardTitle className="font-normal">Create a thread</CardTitle>
       </CardHeader>
@@ -159,7 +161,7 @@ export default function NewThreadInput() {
           <Button
             type="submit"
             className="self-end px-6 font-semibold rounded-full w-fit"
-            disabled={form.formState.isSubmitting}
+            disabled={form.formState.isSubmitting || !form.formState.isValid}
           >
             {form.formState.isSubmitting ? 'Submitting....' : 'Post'}
           </Button>
