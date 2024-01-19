@@ -15,18 +15,21 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
+import LoadingBar from '@/components/ui/loading-bar'
+import { Skeleton } from '@/components/ui/skeleton'
+import api from '@/lib/api'
+import { useAppDispatch } from '@/store/hooks'
+import getErrorMessage from '@/utils/error-handler'
 import { zodResolver } from '@hookform/resolvers/zod'
+import dynamic from 'next/dynamic'
+import { useRouter } from 'next/navigation'
 import { useCallback, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
+import { hideLoading, showLoading } from 'react-redux-loading-bar'
+import { toast } from 'sonner'
 import { z } from 'zod'
 import 'react-quill/dist/quill.snow.css'
-import dynamic from 'next/dynamic'
-import { Skeleton } from '@/components/ui/skeleton'
-import xss from 'xss'
-import { useAppDispatch } from '@/store/hooks'
-import { createThread } from '@/store/threadsSlice'
-import LoadingBar from '@/components/ui/loading-bar'
+import { useSession } from 'next-auth/react'
 
 function getPlainText(richText: string) {
   const parser = new DOMParser()
@@ -36,14 +39,12 @@ function getPlainText(richText: string) {
 }
 
 const formSchema = z.object({
-  title: z.string().min(1),
-  category: z.string(),
-  body: z.string().refine(
+  content: z.string().refine(
     (val) => {
       const plainText = getPlainText(val)
       const result = z
         .string()
-        .min(10)
+        .min(1)
         .safeParse(plainText?.trim())
       return result.success
     },
@@ -51,8 +52,14 @@ const formSchema = z.object({
   ),
 })
 
-export default function NewThreadInput() {
+export default function NewCommentInput({
+  params: { threadId },
+}: {
+  params: { threadId: string }
+}) {
+  const { data } = useSession()
   const dispatch = useAppDispatch()
+  const router = useRouter()
 
   const ReactQuill = useMemo(
     () =>
@@ -71,78 +78,48 @@ export default function NewThreadInput() {
   const form = useForm<z.infer<typeof formSchema>>({
     mode: 'all',
     resolver: zodResolver(formSchema),
-    defaultValues: { title: '', category: '', body: '<p><br></p>' },
+    defaultValues: { content: '<p><br></p>' },
   })
 
   const onSubmit = useCallback(
     async (values: z.infer<typeof formSchema>) => {
-      const { type } = await dispatch(
-        createThread({
-          title: values.title,
-          category: values.category ? values.category : undefined,
-          body: xss(values.body),
-        })
-      )
-      if (type.endsWith('fulfilled')) form.reset()
+      try {
+        dispatch(showLoading(`threads/${threadId}/createComment`))
+        await api.post(
+          `/threads/${threadId}/comments`,
+          { content: values.content },
+          { headers: { Authorization: `Bearer ${data?.user.token}` } }
+        )
+        form.reset()
+        router.refresh()
+      } catch (error) {
+        toast.error(getErrorMessage(error))
+      } finally {
+        dispatch(hideLoading(`threads/${threadId}/createComment`))
+      }
     },
-    [dispatch, form]
+    [dispatch, form, router, threadId, data?.user.token]
   )
 
   return (
     <Card className="relative rounded-none">
-      <LoadingBar scope="threads/createThread" />
+      <LoadingBar scope={`threads/${threadId}/createComment`} />
+
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <CardHeader>
-            <CardTitle className="font-normal">Create a thread</CardTitle>
+            <CardTitle>Give a comment</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-4 p-4">
-            <div className="flex flex-col gap-4 sm:flex-row">
-              <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem className="sm:flex-1">
-                    <FormControl>
-                      <Input
-                        required
-                        placeholder="Title"
-                        type="text"
-                        className="w-full rounded-none"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="category"
-                render={({ field }) => (
-                  <FormItem className="sm:w-[25%]">
-                    <FormControl>
-                      <Input
-                        placeholder="Category"
-                        type="text"
-                        className="w-full rounded-none"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
             <FormField
               control={form.control}
-              name="body"
+              name="content"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
                     <ReactQuill
                       className="[&_.ql-toolbar]:!border [&_.ql-toolbar]:!border-input [&_.ql-toolbar]:!bg-background [&_.ql-toolbar]:!ring-offset-background [&_.ql-container]:!border [&_.ql-container]:!border-input [&_.ql-container]:!bg-background [&_.ql-container]:!ring-offset-background"
-                      placeholder="What is happening?!"
+                      placeholder="Your comment...."
                       theme="snow"
                       modules={{
                         toolbar: [
@@ -163,13 +140,7 @@ export default function NewThreadInput() {
             />
           </CardContent>
           <CardFooter className="flex flex-row justify-end">
-            <Button
-              type="submit"
-              className="rounded-full"
-              disabled={form.formState.isSubmitting || !form.formState.isValid}
-            >
-              {form.formState.isSubmitting ? 'Submitting....' : 'Post'}
-            </Button>
+            <Button type="submit">Send</Button>
           </CardFooter>
         </form>
       </Form>

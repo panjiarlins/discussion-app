@@ -35,9 +35,7 @@ export default function UpVoteCommentButton({
           isVotedByUser ? 'neutral-vote' : 'up-vote'
         }`,
         {},
-        {
-          headers: { Authorization: `Bearer ${data?.user.token}` },
-        }
+        { headers: { Authorization: `Bearer ${data?.user.token}` } }
       )
       router.refresh()
     } catch (error) {

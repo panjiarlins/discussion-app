@@ -1,36 +1,24 @@
 import CommentItem from '@/components/threads/comment-item'
-import api from '@/lib/api'
-import { type ThreadDetail } from '@/types/thread'
-import { notFound } from 'next/navigation'
+import getThreadDetail from '@/utils/get-thread-detail'
+
+export const revalidate = 0
 
 export default async function Comments({
   params: { threadId },
 }: {
   params: { threadId: string }
 }) {
-  try {
-    const {
-      data: {
-        data: { detailThread },
-      },
-    }: {
-      data: {
-        data: { detailThread: ThreadDetail }
-      }
-    } = await api.get(`/threads/${threadId}`)
+  const detailThread = await getThreadDetail(threadId)
 
-    return (
-      <div className="flex flex-col">
-        {detailThread.comments.map((comment) => (
-          <CommentItem
-            key={comment.id}
-            threadId={detailThread.id}
-            comment={comment}
-          />
-        ))}
-      </div>
-    )
-  } catch (error) {
-    notFound()
-  }
+  return (
+    <div className="flex flex-col">
+      {detailThread.comments.map((comment) => (
+        <CommentItem
+          key={comment.id}
+          threadId={detailThread.id}
+          comment={comment}
+        />
+      ))}
+    </div>
+  )
 }
