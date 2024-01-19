@@ -24,7 +24,7 @@ export function handleAPIError(error: any) {
   )
 }
 
-export default function getAsyncThunkErrorMessage(error: any): string {
+export default function getErrorMessage(error: any): string {
   if (error instanceof AxiosError)
     return error.response?.data?.message ?? JSON.stringify(error)
   return error?.message ?? 'Error!'

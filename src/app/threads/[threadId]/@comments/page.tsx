@@ -22,7 +22,11 @@ export default async function Comments({
     return (
       <div className="flex flex-col">
         {detailThread.comments.map((comment) => (
-          <CommentItem key={comment.id} comment={comment} />
+          <CommentItem
+            key={comment.id}
+            threadId={detailThread.id}
+            comment={comment}
+          />
         ))}
       </div>
     )

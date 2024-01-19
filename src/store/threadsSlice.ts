@@ -1,6 +1,6 @@
 import api from '@/lib/api'
 import { type ThreadVote, type Threads } from '@/types/thread'
-import getAsyncThunkErrorMessage from '@/utils/error-handler'
+import getErrorMessage from '@/utils/error-handler'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getSession } from 'next-auth/react'
 import { hideLoading, showLoading } from 'react-redux-loading-bar'
@@ -14,7 +14,7 @@ export const getThreads = createAsyncThunk<Threads>(
       const { data } = await api.get('/threads')
       return fulfillWithValue(data.data.threads)
     } catch (error: any) {
-      const message = getAsyncThunkErrorMessage(error)
+      const message = getErrorMessage(error)
       toast.error(message)
       return rejectWithValue(message)
     } finally {
@@ -42,7 +42,7 @@ export const voteThread = createAsyncThunk<
       )
       return fulfillWithValue(data.data.vote)
     } catch (error: any) {
-      const message = getAsyncThunkErrorMessage(error)
+      const message = getErrorMessage(error)
       toast.error(message)
       return rejectWithValue(message)
     } finally {
@@ -70,7 +70,7 @@ export const createThread = createAsyncThunk<
       )
       return fulfillWithValue(data.data.thread)
     } catch (error: any) {
-      const message = getAsyncThunkErrorMessage(error)
+      const message = getErrorMessage(error)
       toast.error(message)
       return rejectWithValue(message)
     } finally {
