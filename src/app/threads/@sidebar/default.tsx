@@ -1,6 +1,5 @@
 import { options } from '@/app/api/auth/[...nextauth]/options'
 import AccountMenu from '@/components/home/@sidebar/account-menu'
-import SearchInput from '@/components/home/@sidebar/search-input'
 import { getServerSession } from 'next-auth'
 
 export default async function Sidebar() {
@@ -8,7 +7,6 @@ export default async function Sidebar() {
 
   return (
     <section className="flex flex-col gap-4 p-2 max-lg:hidden">
-      <SearchInput />
       {!!session && <AccountMenu />}
     </section>
   )

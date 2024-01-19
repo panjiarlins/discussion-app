@@ -27,6 +27,8 @@ import xss from 'xss'
 import { useAppDispatch } from '@/store/hooks'
 import { createThread } from '@/store/threadsSlice'
 import LoadingBar from '@/components/ui/loading-bar'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 
 function getPlainText(richText: string) {
   const parser = new DOMParser()
@@ -52,7 +54,9 @@ const formSchema = z.object({
 })
 
 export default function NewThreadInput() {
+  const { data } = useSession()
   const dispatch = useAppDispatch()
+  const router = useRouter()
 
   const ReactQuill = useMemo(
     () =>
@@ -163,13 +167,27 @@ export default function NewThreadInput() {
             />
           </CardContent>
           <CardFooter className="flex flex-row justify-end">
-            <Button
-              type="submit"
-              className="rounded-full"
-              disabled={form.formState.isSubmitting || !form.formState.isValid}
-            >
-              {form.formState.isSubmitting ? 'Submitting....' : 'Post'}
-            </Button>
+            {data?.user ? (
+              <Button
+                type="submit"
+                className="rounded-full"
+                disabled={
+                  form.formState.isSubmitting || !form.formState.isValid
+                }
+              >
+                {form.formState.isSubmitting ? 'Posting....' : 'Post'}
+              </Button>
+            ) : (
+              <Button
+                type="button"
+                className="rounded-full"
+                onClick={() => {
+                  router.push('/login')
+                }}
+              >
+                Login
+              </Button>
+            )}
           </CardFooter>
         </form>
       </Form>

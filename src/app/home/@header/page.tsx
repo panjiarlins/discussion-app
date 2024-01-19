@@ -6,6 +6,7 @@ import { options } from '@/app/api/auth/[...nextauth]/options'
 import LogoutButton from '@/components/home/@header/logout-button'
 import HomeButton from '@/components/home/@header/home-button'
 import ProfileButton from '@/components/home/@header/profile-button'
+import LoginButton from '@/components/home/@header/login-button'
 
 export default async function Header() {
   const session = await getServerSession(options)
@@ -19,11 +20,13 @@ export default async function Header() {
         <Image src={Logo} alt="logo" className="size-full" priority />
       </Button>
       <HomeButton />
-      {!!session && (
+      {session ? (
         <>
           <ProfileButton />
           <LogoutButton />
         </>
+      ) : (
+        <LoginButton />
       )}
     </header>
   )

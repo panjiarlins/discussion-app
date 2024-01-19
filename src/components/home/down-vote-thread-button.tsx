@@ -23,6 +23,10 @@ export default function DownVoteThreadButton({
     [downVotesBy, data?.user.id]
   )
   const handleVote = useCallback(async () => {
+    if (!data?.user.token) {
+      router.push('/login')
+      return
+    }
     await dispatch(
       voteThread({
         threadId,
@@ -30,7 +34,7 @@ export default function DownVoteThreadButton({
       })
     )
     router.refresh()
-  }, [dispatch, threadId, isVotedByUser, router])
+  }, [dispatch, threadId, isVotedByUser, router, data?.user.token])
 
   return (
     <Button

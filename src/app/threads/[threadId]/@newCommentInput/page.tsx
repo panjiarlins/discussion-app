@@ -108,7 +108,7 @@ export default function NewCommentInput({
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <CardHeader>
-            <CardTitle>Give a comment</CardTitle>
+            <CardTitle>Leave a comment</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-4 p-4">
             <FormField
@@ -140,7 +140,27 @@ export default function NewCommentInput({
             />
           </CardContent>
           <CardFooter className="flex flex-row justify-end">
-            <Button type="submit">Send</Button>
+            {data?.user ? (
+              <Button
+                type="submit"
+                className="rounded-full"
+                disabled={
+                  form.formState.isSubmitting || !form.formState.isValid
+                }
+              >
+                {form.formState.isSubmitting ? 'Sending....' : 'Send'}
+              </Button>
+            ) : (
+              <Button
+                type="button"
+                className="rounded-full"
+                onClick={() => {
+                  router.push('/login')
+                }}
+              >
+                Login
+              </Button>
+            )}
           </CardFooter>
         </form>
       </Form>

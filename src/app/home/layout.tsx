@@ -1,5 +1,3 @@
-import { getServerSession } from 'next-auth'
-import { options } from '../api/auth/[...nextauth]/options'
 import LoadingBar from '@/components/ui/loading-bar'
 
 export default async function HomeLayout({
@@ -13,8 +11,6 @@ export default async function HomeLayout({
   sidebar: React.ReactNode
   newThreadInput: React.ReactNode
 }) {
-  const session = await getServerSession(options)
-
   return (
     <>
       <LoadingBar scope="threads/getThreads" className="fixed" />
@@ -22,7 +18,7 @@ export default async function HomeLayout({
         {header}
         <main className="flex-1 lg:grid lg:grid-cols-4">
           <section className="lg:col-span-3">
-            {!!session?.user.token && newThreadInput}
+            {newThreadInput}
             {children}
           </section>
           {sidebar}

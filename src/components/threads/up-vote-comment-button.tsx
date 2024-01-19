@@ -29,6 +29,10 @@ export default function UpVoteCommentButton({
   )
   const handleVote = useCallback(async () => {
     try {
+      if (!data?.user.token) {
+        router.push('/login')
+        return
+      }
       dispatch(showLoading(`threads/${threadId}/voteComment/${commentId}`))
       await api.post(
         `/threads/${threadId}/comments/${commentId}/${
