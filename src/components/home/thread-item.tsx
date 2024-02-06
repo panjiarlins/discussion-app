@@ -1,4 +1,4 @@
-import { type Threads } from '@/types/thread'
+import { type Threads } from '@/types/threads'
 import { Button } from '../ui/button'
 import LoadingBar from '../ui/loading-bar'
 import {

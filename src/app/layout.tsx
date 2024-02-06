@@ -22,7 +22,7 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth">
       <body
         className={cn(
-          'min-w-[280px] min-h-screen antialiased',
+          'min-w-[280px] min-h-screen antialiased mx-auto',
           quicksand.className
         )}
       >

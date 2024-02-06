@@ -1,5 +1,5 @@
 import api from '@/lib/api'
-import { type ThreadDetail } from '@/types/thread'
+import { type ThreadDetail } from '@/types/threads'
 import { cache } from 'react'
 
 const getThreadDetail = cache(async (threadId: string) => {

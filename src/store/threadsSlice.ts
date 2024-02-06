@@ -1,5 +1,5 @@
 import api from '@/lib/api'
-import { type ThreadVote, type Threads } from '@/types/thread'
+import { type ThreadVote, type Threads } from '@/types/threads'
 import getErrorMessage from '@/utils/error-handler'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getSession } from 'next-auth/react'

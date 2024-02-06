@@ -8,6 +8,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import LogoutButton from './logout-button'
+import { MoreHorizontal } from 'lucide-react'
 
 export default async function AccountMenu() {
   const session = await getServerSession(options)
@@ -20,35 +21,22 @@ export default async function AccountMenu() {
           className="flex flex-row h-16 gap-4 rounded-full"
         >
           <Image
-            src={session?.user.image ?? ''}
-            alt={session?.user.name ?? ''}
-            width={0}
-            height={0}
-            className="rounded-full size-10"
             unoptimized
             priority
+            src={session?.user.image ?? ''}
+            alt={session?.user.name ?? ''}
+            width={40}
+            height={40}
+            className="rounded-full"
           />
-          <div className="flex-1 text-left font-bold truncate">
+          <div className="flex-1 font-bold text-left truncate">
             {session?.user.name}
           </div>
-          <Button asChild size="icon" variant="link">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                fillRule="evenodd"
-                d="M4.5 12a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Zm6 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Zm6 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </Button>
+          <MoreHorizontal />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="flex flex-col rounded-3xl px-0 overflow-hidden">
-        <Button variant="ghost" className="rounded-none font-bold">
+      <PopoverContent className="flex flex-col px-0 overflow-hidden rounded-3xl">
+        <Button variant="ghost" className="font-bold rounded-none">
           Edit Account
         </Button>
         <LogoutButton />

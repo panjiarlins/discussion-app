@@ -7,10 +7,6 @@ export default withAuth(
     const token = await getToken({ req })
     const isAuthenticated = !!token
 
-    if (!isAuthenticated && req.nextUrl.pathname.startsWith('/leaderboards')) {
-      return NextResponse.redirect(new URL('/home', req.nextUrl))
-    }
-
     if (
       isAuthenticated &&
       (req.nextUrl.pathname.startsWith('/login') ||
@@ -23,5 +19,5 @@ export default withAuth(
 )
 
 export const config = {
-  matcher: ['/login/:path*', '/register/:path*', '/leaderboards/:path*'],
+  matcher: ['/login/:path*', '/register/:path*'],
 }

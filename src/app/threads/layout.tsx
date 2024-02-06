@@ -1,18 +1,18 @@
-export default function HomeLayout({
+import Header from '@/components/home/header/header'
+
+export default function Layout({
   children,
-  header,
   sidebar,
 }: {
   children: React.ReactNode
-  header: React.ReactNode
   sidebar: React.ReactNode
 }) {
   return (
     <div className="flex flex-row sm:container">
-      {header}
+      <Header />
       <main className="flex-1 lg:grid lg:grid-cols-4">
         <section className="lg:col-span-3">{children}</section>
-        {sidebar}
+        <section className="max-lg:hidden">{sidebar}</section>
       </main>
     </div>
   )

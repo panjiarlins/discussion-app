@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button'
 import { useAppDispatch } from '@/store/hooks'
 import { voteThread } from '@/store/threadsSlice'
-import { type Threads } from '@/types/thread'
+import { type Threads } from '@/types/threads'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useCallback, useMemo } from 'react'

@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button'
 import api from '@/lib/api'
 import { useAppDispatch } from '@/store/hooks'
-import { type ThreadDetail } from '@/types/thread'
+import { type ThreadDetail } from '@/types/threads'
 import getErrorMessage from '@/utils/error-handler'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'

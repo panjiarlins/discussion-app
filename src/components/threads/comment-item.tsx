@@ -1,4 +1,4 @@
-import { type ThreadDetail } from '@/types/thread'
+import { type ThreadDetail } from '@/types/threads'
 import { Card, CardContent, CardFooter, CardHeader } from '../ui/card'
 import Image from 'next/image'
 import UpVoteCommentButton from './up-vote-comment-button'

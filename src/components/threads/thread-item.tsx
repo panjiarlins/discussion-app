@@ -11,7 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from '../ui/card'
-import { type ThreadDetail } from '@/types/thread'
+import { type ThreadDetail } from '@/types/threads'
 import Image from 'next/image'
 import xss from 'xss'
 

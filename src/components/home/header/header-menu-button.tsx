@@ -41,7 +41,7 @@ export default function HeaderMenuButton({
             size="icon"
             variant="ghost"
             className={cn(
-              'flex flex-row gap-4 rounded-full xl:size-auto xl:py-2 xl:px-4 [&>svg]:size-8 [&>svg]:text-primary',
+              'flex flex-row gap-4 rounded-full xl:size-auto xl:py-2 xl:px-4',
               isBold
                 ? '[&>svg]:stroke-2 [&>span]:font-extrabold'
                 : '[&>svg]:stroke-1 [&>span]:font-medium'
@@ -60,7 +60,7 @@ export default function HeaderMenuButton({
             )}
           </Button>
         </TooltipTrigger>
-        <TooltipContent>{tooltip}</TooltipContent>
+        <TooltipContent className="xl:hidden">{tooltip}</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   )
