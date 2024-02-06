@@ -6,7 +6,11 @@ import { getThreads } from '@/store/threadsSlice'
 import { useEffect } from 'react'
 import Loading from './_loading'
 
-export default function HomePage() {
+export default function HomePage({
+  searchParams: { q },
+}: {
+  searchParams: { q: string | null }
+}) {
   const threads = useAppSelector((state) => state.threads)
   const isLoading = useAppSelector(
     (states) => states.loadingBar['threads/getThreads']
@@ -14,8 +18,8 @@ export default function HomePage() {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    void dispatch(getThreads())
-  }, [dispatch])
+    void dispatch(getThreads({ q }))
+  }, [dispatch, q])
 
   if (isLoading) return <Loading />
 

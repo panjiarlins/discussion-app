@@ -6,13 +6,29 @@ import { getSession } from 'next-auth/react'
 import { hideLoading, showLoading } from 'react-redux-loading-bar'
 import { toast } from 'sonner'
 
-export const getThreads = createAsyncThunk<Threads>(
+export const getThreads = createAsyncThunk<Threads, { q: string | null }>(
   'threads/getThreads',
-  async (_, { dispatch, fulfillWithValue, rejectWithValue }) => {
+  async ({ q }, { dispatch, fulfillWithValue, rejectWithValue }) => {
     try {
       dispatch(showLoading('threads/getThreads'))
-      const { data } = await api.get('/threads')
-      return fulfillWithValue(data.data.threads)
+      const {
+        data: {
+          data: { threads },
+        },
+      }: { data: { data: { threads: Threads } } } = await api.get('/threads')
+
+      if (q) {
+        return fulfillWithValue(
+          threads.filter(
+            (thread) =>
+              thread.title.toLowerCase().includes(q.toLowerCase()) ||
+              thread.body.toLowerCase().includes(q.toLowerCase()) ||
+              thread.category.toLowerCase().includes(q.toLowerCase())
+          )
+        )
+      }
+
+      return fulfillWithValue(threads)
     } catch (error: any) {
       const message = getErrorMessage(error)
       toast.error(message)
