@@ -5,6 +5,7 @@ import AuthProvider from '@/contexts/auth-provider'
 import { cn } from '@/lib/utils'
 import { Toaster } from '@/components/ui/sonner'
 import StoreProvider from '@/store/store-provider'
+import { ThemeProvider } from '@/contexts/theme-provider'
 
 const quicksand = Quicksand({ subsets: ['latin'] })
 
@@ -19,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" suppressHydrationWarning className="scroll-smooth">
       <body
         className={cn(
           'min-w-[280px] min-h-screen antialiased mx-auto',
@@ -28,8 +29,15 @@ export default function RootLayout({
       >
         <AuthProvider>
           <StoreProvider>
-            {children}
-            <Toaster richColors closeButton position="top-center" />
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+              <Toaster richColors closeButton position="top-center" />
+            </ThemeProvider>
           </StoreProvider>
         </AuthProvider>
       </body>

@@ -7,6 +7,7 @@ import HomeButton from '@/components/home/header/home-button'
 import ProfileButton from '@/components/home/header/profile-button'
 import LoginButton from '@/components/home/header/login-button'
 import LeaderboardsButton from './leaderboards-button'
+import ThemeButton from './theme-button'
 
 export default async function Header() {
   const session = await getServerSession(options)
@@ -22,6 +23,7 @@ export default async function Header() {
         className="self-center mt-1 mb-6 rounded-full"
       />
       <HomeButton />
+
       {session ? (
         <>
           <LeaderboardsButton />
@@ -31,6 +33,7 @@ export default async function Header() {
       ) : (
         <LoginButton />
       )}
+      <ThemeButton className="self-center mt-6 mb-1 rounded-full" />
     </header>
   )
 }
