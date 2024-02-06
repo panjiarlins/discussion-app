@@ -4,11 +4,7 @@ import Image from 'next/image'
 import Logo from '../../../public/_049fd1fb-231f-4466-9919-f4ac28359ee2.jpeg'
 import { useRouter } from 'next/navigation'
 
-export default function Layout({
-  children,
-}: {
-  children: React.ReactNode
-}): React.JSX.Element {
+export default function Layout({ children }: { children: React.ReactNode }) {
   const router = useRouter()
 
   return (

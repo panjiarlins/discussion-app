@@ -24,7 +24,7 @@ const formSchema = z.object({
   password: z.string().min(6),
 })
 
-export default function LoginPage() {
+export default function Page() {
   const router = useRouter()
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -51,7 +51,7 @@ export default function LoginPage() {
       } else {
         form.reset()
         toast.success('Login Successful!', { id: toastId, duration: 4000 })
-        router.push('/home')
+        router.refresh()
       }
     },
     [form, router]

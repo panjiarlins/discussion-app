@@ -25,7 +25,7 @@ const formSchema = z.object({
   password: z.string().min(6),
 })
 
-export default function RegisterPage() {
+export default function Page() {
   const router = useRouter()
 
   const form = useForm<z.infer<typeof formSchema>>({
