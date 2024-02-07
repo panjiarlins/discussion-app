@@ -118,7 +118,17 @@ export default function NewCommentInput({
                 <FormItem>
                   <FormControl>
                     <ReactQuill
-                      className="[&_.ql-toolbar]:!border [&_.ql-toolbar]:!border-input [&_.ql-toolbar]:!bg-background [&_.ql-toolbar]:!ring-offset-background [&_.ql-container]:!border [&_.ql-container]:!border-input [&_.ql-container]:!bg-background [&_.ql-container]:!ring-offset-background"
+                      className={`
+                        [&_.ql-toolbar]:!border
+                        [&_.ql-toolbar]:!border-input
+                        [&_.ql-toolbar]:!bg-background
+                        [&_.ql-toolbar]:!ring-offset-background
+                        [&_.ql-container]:!border
+                        [&_.ql-container]:!border-input
+                        [&_.ql-container]:!bg-background
+                        [&_.ql-container]:!ring-offset-background
+                        [&_.ql-blank]:before:!text-muted-foreground
+                      `}
                       placeholder="Your comment...."
                       theme="snow"
                       modules={{

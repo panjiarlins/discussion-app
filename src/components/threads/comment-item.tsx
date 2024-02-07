@@ -1,11 +1,21 @@
 import { type ThreadDetail } from '@/types/threads'
 import { Card, CardContent, CardFooter, CardHeader } from '../ui/card'
 import Image from 'next/image'
-import UpVoteCommentButton from './up-vote-comment-button'
-import DownVoteCommentButton from './down-vote-comment-button'
 import timeSince from '@/utils/time-since'
 import xss from 'xss'
 import LoadingBar from '../ui/loading-bar'
+import dynamic from 'next/dynamic'
+import { Skeleton } from '../ui/skeleton'
+
+const UpVoteCommentButton = dynamic(
+  async () => await import('./up-vote-comment-button'),
+  { ssr: false, loading: () => <Skeleton className="w-16 h-10 rounded-full" /> }
+)
+
+const DownVoteCommentButton = dynamic(
+  async () => await import('./down-vote-comment-button'),
+  { ssr: false, loading: () => <Skeleton className="w-16 h-10 rounded-full" /> }
+)
 
 export default function CommentItem({
   threadId,
