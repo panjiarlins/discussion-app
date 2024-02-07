@@ -28,6 +28,7 @@ export default function DownVoteCommentButton({
     isVotedByUser:
       downVotesBy.findIndex((userId) => userId === data?.user.id) !== -1,
     count: downVotesBy.length,
+    pending: false,
   })
 
   useEffect(() => {
@@ -35,6 +36,7 @@ export default function DownVoteCommentButton({
       isVotedByUser:
         downVotesBy.findIndex((userId) => userId === data?.user.id) !== -1,
       count: downVotesBy.length,
+      pending: false,
     })
   }, [downVotesBy, data?.user.id])
 
@@ -47,6 +49,7 @@ export default function DownVoteCommentButton({
       setUserVote((prev) => ({
         isVotedByUser: !prev.isVotedByUser,
         count: prev.isVotedByUser ? prev.count - 1 : prev.count + 1,
+        pending: true,
       }))
       dispatch(showLoading(`threads/${threadId}/voteComment/${commentId}`))
       await api.post(
@@ -61,10 +64,15 @@ export default function DownVoteCommentButton({
       setUserVote((prev) => ({
         isVotedByUser: !prev.isVotedByUser,
         count: prev.isVotedByUser ? prev.count - 1 : prev.count + 1,
+        pending: false,
       }))
       toast.error(getErrorMessage(error))
     } finally {
       dispatch(hideLoading(`threads/${threadId}/voteComment/${commentId}`))
+      setUserVote((prev) => ({
+        ...prev,
+        pending: false,
+      }))
     }
   }, [
     data?.user.token,
@@ -80,6 +88,7 @@ export default function DownVoteCommentButton({
       onClick={handleVote}
       variant="ghost"
       className="space-x-1 rounded-full"
+      disabled={userVote.pending}
     >
       {userVote.isVotedByUser ? (
         <ArrowDownCircle className="size-6 stroke-background fill-primary" />
