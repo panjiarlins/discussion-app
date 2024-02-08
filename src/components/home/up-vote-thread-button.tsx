@@ -1,13 +1,13 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { useAppDispatch } from '@/store/hooks'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { voteThread } from '@/store/threadsSlice'
 import { type Threads } from '@/types/threads'
 import { ArrowBigUp } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 export default function UpVoteThreadButton({
   threadId,
@@ -16,13 +16,24 @@ export default function UpVoteThreadButton({
   threadId: Threads[number]['id']
   upVotesBy: Threads[number]['upVotesBy']
 }) {
+  const loading = useAppSelector((state) => state.loadingBar)
   const { data } = useSession()
   const dispatch = useAppDispatch()
   const router = useRouter()
-  const isVotedByUser = useMemo(
-    () => upVotesBy.findIndex((userId) => userId === data?.user.id) !== -1,
-    [upVotesBy, data?.user.id]
-  )
+  const [optimisticUserVote, setOptimisticUserVote] = useState({
+    isVotedByUser:
+      upVotesBy.findIndex((userId) => userId === data?.user.id) !== -1,
+    pending: false,
+  })
+
+  useEffect(() => {
+    setOptimisticUserVote({
+      isVotedByUser:
+        upVotesBy.findIndex((userId) => userId === data?.user.id) !== -1,
+      pending: false,
+    })
+  }, [upVotesBy, data?.user.id])
+
   const handleVote = useCallback(async () => {
     if (!data?.user.token) {
       router.push('/login')
@@ -31,11 +42,17 @@ export default function UpVoteThreadButton({
     await dispatch(
       voteThread({
         threadId,
-        voteType: isVotedByUser ? 'neutral-vote' : 'up-vote',
+        voteType: optimisticUserVote.isVotedByUser ? 'neutral-vote' : 'up-vote',
+        setOptimisticUserVote,
       })
     )
-    router.refresh()
-  }, [dispatch, threadId, isVotedByUser, router, data?.user.token])
+  }, [
+    data?.user.token,
+    dispatch,
+    threadId,
+    optimisticUserVote.isVotedByUser,
+    router,
+  ])
 
   return (
     <Button
@@ -43,13 +60,22 @@ export default function UpVoteThreadButton({
       variant="ghost"
       className="space-x-1 rounded-full"
       type="button"
+      disabled={
+        optimisticUserVote.pending || loading[`threads/voteThread/${threadId}`]
+      }
     >
       <ArrowBigUp
         className={`size-6 stroke-primary ${
-          isVotedByUser ? 'fill-primary' : 'fill-background'
+          optimisticUserVote.isVotedByUser ? 'fill-primary' : 'fill-background'
         }`}
       />
-      <span>{upVotesBy.length}</span>
+      <span>
+        {optimisticUserVote.pending
+          ? optimisticUserVote.isVotedByUser
+            ? upVotesBy.length + 1
+            : upVotesBy.length - 1
+          : upVotesBy.length}
+      </span>
     </Button>
   )
 }

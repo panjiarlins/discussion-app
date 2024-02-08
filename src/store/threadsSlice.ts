@@ -41,14 +41,27 @@ export const getThreads = createAsyncThunk<Threads, { q: string | null }>(
 
 export const voteThread = createAsyncThunk<
   ThreadVote,
-  { threadId: string; voteType: 'up-vote' | 'down-vote' | 'neutral-vote' }
+  {
+    threadId: string
+    voteType: 'up-vote' | 'down-vote' | 'neutral-vote'
+    setOptimisticUserVote: React.Dispatch<
+      React.SetStateAction<{
+        isVotedByUser: boolean
+        pending: boolean
+      }>
+    >
+  }
 >(
   'threads/voteThread',
   async (
-    { threadId, voteType },
+    { threadId, voteType, setOptimisticUserVote },
     { dispatch, fulfillWithValue, rejectWithValue }
   ) => {
     try {
+      setOptimisticUserVote((prev) => ({
+        isVotedByUser: !prev.isVotedByUser,
+        pending: true,
+      }))
       dispatch(showLoading(`threads/voteThread/${threadId}`))
       const session = await getSession()
       const { data } = await api.post(
@@ -58,11 +71,19 @@ export const voteThread = createAsyncThunk<
       )
       return fulfillWithValue(data.data.vote)
     } catch (error: any) {
+      setOptimisticUserVote((prev) => ({
+        isVotedByUser: !prev.isVotedByUser,
+        pending: false,
+      }))
       const message = getErrorMessage(error)
       toast.error(message)
       return rejectWithValue(message)
     } finally {
       dispatch(hideLoading(`threads/voteThread/${threadId}`))
+      setOptimisticUserVote((prev) => ({
+        ...prev,
+        pending: false,
+      }))
     }
   }
 )
