@@ -28,7 +28,7 @@ export default function Loading() {
       <CardContent>
         <Skeleton className="w-full h-64" />
       </CardContent>
-      <CardFooter>
+      <CardFooter className="flex flex-row flex-wrap items-center">
         <Skeleton className="w-20 h-8 rounded-full" />
         <Skeleton className="w-20 h-8 rounded-full" />
         <Skeleton className="w-20 h-8 rounded-full" />

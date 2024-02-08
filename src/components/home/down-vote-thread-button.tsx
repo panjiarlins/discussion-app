@@ -60,7 +60,7 @@ export default function DownVoteThreadButton({
     <Button
       onClick={handleVote}
       variant="ghost"
-      className="space-x-1 rounded-full"
+      className="w-24 space-x-1 rounded-full"
       type="button"
       disabled={
         optimisticUserVote.pending || loading[`threads/voteThread/${threadId}`]

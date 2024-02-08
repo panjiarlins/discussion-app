@@ -14,7 +14,7 @@ export default function CommentButton({
     <Button
       asChild
       variant="ghost"
-      className="space-x-1 rounded-full"
+      className="w-24 space-x-1 rounded-full"
       type="button"
     >
       <Link href={`/threads/${threadId}#comments`}>
