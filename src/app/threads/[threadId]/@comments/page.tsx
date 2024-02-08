@@ -11,7 +11,7 @@ export default async function Comments({
   const detailThread = await getThreadDetail(threadId)
 
   return (
-    <div className="flex flex-col">
+    <div id="comments" className="flex flex-col">
       {detailThread.comments.map((comment) => (
         <CommentItem
           key={comment.id}

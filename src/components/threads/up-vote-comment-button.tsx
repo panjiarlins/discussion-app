@@ -5,7 +5,7 @@ import api from '@/lib/api'
 import { useAppDispatch } from '@/store/hooks'
 import { type ThreadDetail } from '@/types/threads'
 import getErrorMessage from '@/utils/error-handler'
-import { ArrowUpCircle } from 'lucide-react'
+import { ArrowBigUp } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
@@ -89,12 +89,13 @@ export default function UpVoteCommentButton({
       variant="ghost"
       className="space-x-1 rounded-full"
       disabled={userVote.pending}
+      type="button"
     >
-      {userVote.isVotedByUser ? (
-        <ArrowUpCircle className="size-6 stroke-background fill-primary" />
-      ) : (
-        <ArrowUpCircle className="size-6 stroke-primary fill-background" />
-      )}
+      <ArrowBigUp
+        className={`size-6 stroke-primary ${
+          userVote.isVotedByUser ? 'fill-primary' : 'fill-background'
+        }`}
+      />
       <span>{userVote.count}</span>
     </Button>
   )

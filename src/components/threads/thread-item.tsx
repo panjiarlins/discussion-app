@@ -55,7 +55,10 @@ export default function ThreadItem({ thread }: { thread: ThreadDetail }) {
           threadId={thread.id}
           downVotesBy={thread.downVotesBy}
         />
-        <CommentButton totalComments={thread.comments.length} />
+        <CommentButton
+          threadId={thread.id}
+          totalComments={thread.comments.length}
+        />
       </CardFooter>
     </Card>
   )
