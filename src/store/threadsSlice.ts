@@ -5,29 +5,48 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getSession } from 'next-auth/react'
 import { hideLoading, showLoading } from 'react-redux-loading-bar'
 import { toast } from 'sonner'
+import { type RootState } from './store'
+import filterThreads from '@/utils/filter-threads'
+import { type useSearchParams } from 'next/navigation'
 
-export const getThreads = createAsyncThunk<Threads, { q: string | null }>(
-  'threads/getThreads',
-  async ({ q }, { dispatch, fulfillWithValue, rejectWithValue }) => {
+export const getAllThreads = createAsyncThunk<Threads>(
+  'threads/getAllThreads',
+  async (_, { dispatch, fulfillWithValue, rejectWithValue }) => {
     try {
-      dispatch(showLoading('threads/getThreads'))
+      dispatch(showLoading('threads/getAllThreads'))
       const {
         data: {
           data: { threads },
         },
       }: { data: { data: { threads: Threads } } } = await api.get('/threads')
 
-      if (q) {
-        return fulfillWithValue(
-          threads.filter(
-            (thread) =>
-              thread.title.toLowerCase().includes(q.toLowerCase()) ||
-              thread.body.toLowerCase().includes(q.toLowerCase()) ||
-              thread.category.toLowerCase().includes(q.toLowerCase())
-          )
-        )
-      }
+      return fulfillWithValue(threads)
+    } catch (error: any) {
+      const message = getErrorMessage(error)
+      toast.error(message)
+      return rejectWithValue(message)
+    } finally {
+      dispatch(hideLoading('threads/getAllThreads'))
+    }
+  }
+)
 
+export const getThreads = createAsyncThunk<
+  Threads,
+  { searchParams: ReturnType<typeof useSearchParams> }
+>(
+  'threads/getThreads',
+  async (
+    { searchParams },
+    { getState, dispatch, fulfillWithValue, rejectWithValue }
+  ) => {
+    try {
+      dispatch(showLoading('threads/getThreads'))
+      await dispatch(getAllThreads())
+      const threads = filterThreads(
+        (getState() as RootState).threads.allThreads,
+        searchParams
+      )
       return fulfillWithValue(threads)
     } catch (error: any) {
       const message = getErrorMessage(error)
@@ -90,11 +109,16 @@ export const voteThread = createAsyncThunk<
 
 export const createThread = createAsyncThunk<
   Threads[number],
-  { title: string; body: string; category?: string }
+  {
+    title: string
+    body: string
+    category?: string
+    searchParams: ReturnType<typeof useSearchParams>
+  }
 >(
   'threads/createThread',
   async (
-    { title, body, category },
+    { title, body, category, searchParams },
     { dispatch, fulfillWithValue, rejectWithValue }
   ) => {
     try {
@@ -120,11 +144,26 @@ const threadsSlice = createSlice({
   name: 'threads',
   initialState: {
     loading: false as boolean,
+    allThreads: [] as Threads,
     threads: [] as Threads,
     error: '' as string,
   },
   reducers: {},
   extraReducers(builder) {
+    // getAllThreads
+    builder.addCase(getAllThreads.pending, (state) => {
+      state.loading = true
+      state.error = ''
+    })
+    builder.addCase(getAllThreads.rejected, (state, action) => {
+      state.loading = false
+      state.error = action.payload as string
+    })
+    builder.addCase(getAllThreads.fulfilled, (state, action) => {
+      state.loading = false
+      state.allThreads = action.payload
+    })
+
     // getThreads
     builder.addCase(getThreads.pending, (state) => {
       state.loading = true
@@ -193,7 +232,11 @@ const threadsSlice = createSlice({
     })
     builder.addCase(createThread.fulfilled, (state, action) => {
       state.loading = false
-      state.threads.unshift(action.payload)
+      state.allThreads.unshift(action.payload)
+      state.threads = filterThreads(
+        state.allThreads,
+        action.meta.arg.searchParams
+      )
     })
   },
 })

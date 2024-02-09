@@ -18,21 +18,19 @@ import { Button } from '@/components/ui/button'
 import xss from 'xss'
 import VoteThreadButton from '@/components/home/vote-thread-button'
 import CommentButton from '@/components/home/comment-button'
+import { useSearchParams } from 'next/navigation'
 
-export default function HomePage({
-  searchParams: { q },
-}: {
-  searchParams: { q: string | null }
-}) {
+export default function HomePage() {
   const threads = useAppSelector((state) => state.threads)
   const isLoading = useAppSelector(
     (states) => states.loadingBar['threads/getThreads']
   )
   const dispatch = useAppDispatch()
+  const searchParams = useSearchParams()
 
   useEffect(() => {
-    void dispatch(getThreads({ q }))
-  }, [dispatch, q])
+    void dispatch(getThreads({ searchParams }))
+  }, [dispatch, searchParams])
 
   if (isLoading) return <Loading />
 

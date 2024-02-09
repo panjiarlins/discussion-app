@@ -18,7 +18,8 @@ export default async function AccountMenu() {
       <PopoverTrigger asChild>
         <Button
           variant="secondary"
-          className="flex flex-row h-16 gap-4 rounded-full"
+          className="flex flex-row h-16 gap-4 rounded-full w-full"
+          type="button"
         >
           <Image
             unoptimized

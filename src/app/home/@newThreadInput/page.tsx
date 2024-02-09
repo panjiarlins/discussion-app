@@ -28,7 +28,7 @@ import { useAppDispatch } from '@/store/hooks'
 import { createThread } from '@/store/threadsSlice'
 import LoadingBar from '@/components/ui/loading-bar'
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 function getPlainText(richText: string) {
   const parser = new DOMParser()
@@ -57,6 +57,7 @@ export default function NewThreadInput() {
   const { data } = useSession()
   const dispatch = useAppDispatch()
   const router = useRouter()
+  const searchParams = useSearchParams()
 
   const ReactQuill = useMemo(
     () =>
@@ -85,11 +86,12 @@ export default function NewThreadInput() {
           title: values.title,
           category: values.category ? values.category : undefined,
           body: xss(values.body),
+          searchParams,
         })
       )
       if (type.endsWith('fulfilled')) form.reset()
     },
-    [dispatch, form]
+    [dispatch, form, searchParams]
   )
 
   return (
