@@ -10,7 +10,6 @@ import { useCallback, useMemo } from 'react'
 import { useAction } from 'next-safe-action/hooks'
 import { voteThreadComment } from '@/utils/thread'
 import { hideLoading, showLoading } from 'react-redux-loading-bar'
-import { getErrorMessage } from '@/utils/error-handler'
 import { toast } from 'sonner'
 
 export default function VoteCommentButton({
@@ -41,8 +40,7 @@ export default function VoteCommentButton({
       dispatch(showLoading(`threads/${threadId}/voteComment/${commentId}`))
     },
     onError: (error) => {
-      const message = getErrorMessage(error)
-      toast.error(message)
+      toast.error(error.fetchError ?? error.serverError ?? 'Error!')
       dispatch(hideLoading(`threads/${threadId}/voteComment/${commentId}`))
     },
     onSuccess: () => {
