@@ -51,7 +51,7 @@ export default function Page() {
       } else {
         form.reset()
         toast.success('Login Successful!', { id: toastId, duration: 4000 })
-        router.refresh()
+        router.replace('/home')
       }
     },
     [form, router]

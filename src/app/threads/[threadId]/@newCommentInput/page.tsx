@@ -19,7 +19,7 @@ import LoadingBar from '@/components/ui/loading-bar'
 import { Skeleton } from '@/components/ui/skeleton'
 import api from '@/lib/api'
 import { useAppDispatch } from '@/store/hooks'
-import getErrorMessage from '@/utils/error-handler'
+import { getErrorMessage } from '@/utils/error-handler'
 import { zodResolver } from '@hookform/resolvers/zod'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/navigation'
@@ -93,7 +93,7 @@ export default function NewCommentInput({
         form.reset()
         router.refresh()
       } catch (error) {
-        toast.error(getErrorMessage(error))
+        toast.error(await getErrorMessage(error))
       } finally {
         dispatch(hideLoading(`threads/${threadId}/createComment`))
       }

@@ -3,6 +3,16 @@ import { NextResponse } from 'next/server'
 import { ZodError } from 'zod'
 import { fromZodError } from 'zod-validation-error'
 
+export async function getErrorMessage(error: any) {
+  if (error instanceof AxiosError)
+    return (error.response?.data?.message as string) ?? JSON.stringify(error)
+  if (error instanceof Response) {
+    const err = await error.json()
+    return (err?.message as string) ?? 'Error!'
+  }
+  return (error?.message as string) ?? 'Error!'
+}
+
 export function handleAPIError(error: any) {
   if (error instanceof ZodError) {
     return NextResponse.json(
@@ -22,10 +32,4 @@ export function handleAPIError(error: any) {
     { message: error?.message ?? 'Error!' },
     { status: 500 }
   )
-}
-
-export default function getErrorMessage(error: any): string {
-  if (error instanceof AxiosError)
-    return error.response?.data?.message ?? JSON.stringify(error)
-  return error?.message ?? 'Error!'
 }

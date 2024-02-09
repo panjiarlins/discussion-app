@@ -1,6 +1,6 @@
 import api from '@/lib/api'
 import { type Users } from '@/types/users'
-import getErrorMessage from '@/utils/error-handler'
+import { getErrorMessage } from '@/utils/error-handler'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { hideLoading, showLoading } from 'react-redux-loading-bar'
 import { toast } from 'sonner'
@@ -13,7 +13,7 @@ export const getAllUsers = createAsyncThunk<Users>(
       const { data } = await api.get('/users')
       return fulfillWithValue(data.data.users)
     } catch (error: any) {
-      const message = getErrorMessage(error)
+      const message = await getErrorMessage(error)
       toast.error(message)
       return rejectWithValue(message)
     } finally {

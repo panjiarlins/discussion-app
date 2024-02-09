@@ -15,9 +15,11 @@ import {
 import { Input } from '@/components/ui/input'
 import Link from 'next/link'
 import { toast } from 'sonner'
-import axios from 'axios'
 import { useRouter } from 'next/navigation'
-import { useCallback } from 'react'
+import { useAction } from 'next-safe-action/hooks'
+import { register } from '@/utils/auth'
+
+const TOAST_ID = 'register'
 
 const formSchema = z.object({
   name: z.string().min(3),
@@ -37,44 +39,35 @@ export default function Page() {
     },
   })
 
-  const onSubmit = useCallback(
-    async (values: z.infer<typeof formSchema>) => {
-      const toastId = toast.loading('Loading....', {
+  const { execute } = useAction(register, {
+    onExecute: () => {
+      toast.loading('Loading....', {
         duration: Infinity,
         dismissible: true,
+        id: TOAST_ID,
       })
-      try {
-        await axios.post('/api/auth/register', {
-          name: values.name,
-          email: values.email,
-          password: values.password,
-        })
-        form.reset()
-        router.push('/login')
-        toast.success('Registration successful!', {
-          id: toastId,
-          duration: 4000,
-        })
-      } catch (error: any) {
-        toast.error(
-          (error.response?.data?.message as string) ??
-            (error?.message as string) ??
-            'Error!',
-          {
-            id: toastId,
-            duration: 4000,
-          }
-        )
-      }
     },
-    [form, router]
-  )
+    onError: (error) => {
+      toast.error(error.fetchError ?? error.serverError ?? 'Error!', {
+        id: TOAST_ID,
+        duration: 4000,
+      })
+    },
+    onSuccess: () => {
+      toast.success('Registration successful!', {
+        id: TOAST_ID,
+        duration: 4000,
+      })
+      form.reset()
+      router.push('/login')
+    },
+  })
 
   return (
     <section className="w-full max-w-md">
       <p className="pb-6 text-4xl font-extrabold">Join Today.</p>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={form.handleSubmit(execute)} className="space-y-4">
           <FormField
             control={form.control}
             name="name"

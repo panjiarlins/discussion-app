@@ -1,6 +1,6 @@
 import api from '@/lib/api'
 import { type ThreadVote, type Threads } from '@/types/threads'
-import getErrorMessage from '@/utils/error-handler'
+import { getErrorMessage } from '@/utils/error-handler'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getSession } from 'next-auth/react'
 import { hideLoading, showLoading } from 'react-redux-loading-bar'
@@ -34,7 +34,7 @@ export const getAllThreads = createAsyncThunk<Threads>(
 
       return fulfillWithValue(threads)
     } catch (error: any) {
-      const message = getErrorMessage(error)
+      const message = await getErrorMessage(error)
       toast.error(message)
       return rejectWithValue(message)
     } finally {
@@ -61,7 +61,7 @@ export const getThreads = createAsyncThunk<
       )
       return fulfillWithValue(threads)
     } catch (error: any) {
-      const message = getErrorMessage(error)
+      const message = await getErrorMessage(error)
       toast.error(message)
       return rejectWithValue(message)
     } finally {
@@ -106,7 +106,7 @@ export const voteThread = createAsyncThunk<
         isVotedByUser: !prev.isVotedByUser,
         pending: false,
       }))
-      const message = getErrorMessage(error)
+      const message = await getErrorMessage(error)
       toast.error(message)
       return rejectWithValue(message)
     } finally {
@@ -143,7 +143,7 @@ export const createThread = createAsyncThunk<
       )
       return fulfillWithValue(data.data.thread)
     } catch (error: any) {
-      const message = getErrorMessage(error)
+      const message = await getErrorMessage(error)
       toast.error(message)
       return rejectWithValue(message)
     } finally {

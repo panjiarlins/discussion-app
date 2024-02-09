@@ -10,7 +10,7 @@ import { useCallback, useMemo } from 'react'
 import { useAction } from 'next-safe-action/hooks'
 import { voteThreadComment } from '@/utils/thread'
 import { hideLoading, showLoading } from 'react-redux-loading-bar'
-import getErrorMessage from '@/utils/error-handler'
+import { getErrorMessage } from '@/utils/error-handler'
 import { toast } from 'sonner'
 
 export default function VoteCommentButton({
