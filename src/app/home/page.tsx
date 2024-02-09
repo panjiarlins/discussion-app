@@ -35,6 +35,14 @@ export default function Page() {
 
   if (isLoading) return <Loading />
 
+  if (threads.threads.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center h-20">
+        No Threads Found
+      </div>
+    )
+  }
+
   return (
     <>
       {threads.threads.map((thread) => (

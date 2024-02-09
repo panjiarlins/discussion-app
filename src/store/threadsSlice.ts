@@ -54,7 +54,6 @@ export const getThreads = createAsyncThunk<
   ) => {
     try {
       dispatch(showLoading('threads/getThreads'))
-      await new Promise((resolve) => setTimeout(resolve, 4000))
       await dispatch(getAllThreads())
       const threads = filterThreads(
         (getState() as RootState).threads.allThreads,
