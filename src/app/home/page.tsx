@@ -20,6 +20,7 @@ import VoteThreadButton from '@/components/home/vote-thread-button'
 import CommentButton from '@/components/home/comment-button'
 import { useSearchParams } from 'next/navigation'
 import Image from 'next/image'
+import { BellRing } from 'lucide-react'
 
 export default function Page() {
   const threads = useAppSelector((state) => state.threads)
@@ -50,16 +51,33 @@ export default function Page() {
           <LoadingBar scope={`threads/voteThread/${thread.id}`} />
           <CardHeader>
             <div className="flex flex-row items-center gap-4 pb-4">
-              <Image
-                unoptimized
-                priority
-                src={thread.owner?.avatar ?? ''}
-                alt={thread.owner?.name ?? ''}
-                width={0}
-                height={0}
-                className="rounded-full size-8"
-              />
-              <span className="font-semibold">{thread.owner?.name ?? ''}</span>
+              {thread.owner ? (
+                <>
+                  <Image
+                    unoptimized
+                    priority
+                    src={thread.owner?.avatar ?? ''}
+                    alt={thread.owner?.name ?? ''}
+                    width={0}
+                    height={0}
+                    className="rounded-full size-8"
+                  />
+                  <span className="font-semibold">
+                    {thread.owner?.name ?? ''}
+                  </span>
+                </>
+              ) : (
+                <Button
+                  asChild
+                  size="sm"
+                  className="rounded-full animate-pulse"
+                >
+                  <div className="flex flex-row items-center gap-2">
+                    <BellRing className="size-6" />
+                    <span>New Thread</span>
+                  </div>
+                </Button>
+              )}
             </div>
             <CardTitle>
               <Link href={`/threads/${thread.id}`}>{thread.title}</Link>
