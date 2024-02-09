@@ -13,6 +13,10 @@ export default function Loading() {
       {[1, 2].map((card) => (
         <Card key={card} className="relative rounded-none">
           <CardHeader>
+            <div className="flex flex-row items-center gap-4 pb-4">
+              <Skeleton className="rounded-full size-8" />
+              <Skeleton className="w-[25%] h-4" />
+            </div>
             <CardTitle>
               <Skeleton className="w-[75%] h-6" />
             </CardTitle>

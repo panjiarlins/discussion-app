@@ -1,3 +1,5 @@
+import { type Users } from './users'
+
 export type Threads = Array<{
   id: string
   title: string
@@ -8,6 +10,7 @@ export type Threads = Array<{
   upVotesBy: string[]
   downVotesBy: string[]
   totalComments: number
+  owner?: Users[number]
 }>
 
 export interface ThreadDetail {

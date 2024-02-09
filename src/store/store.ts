@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
-import threadsSlice from './threadsSlice'
 import { loadingBarReducer } from 'react-redux-loading-bar'
+import usersSlice from './userSlice'
+import threadsSlice from './threadsSlice'
 
 export const store = configureStore({
   reducer: {
     loadingBar: loadingBarReducer,
+    users: usersSlice.reducer,
     threads: threadsSlice.reducer,
   },
 })

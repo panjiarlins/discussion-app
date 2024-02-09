@@ -8,17 +8,29 @@ import { toast } from 'sonner'
 import { type RootState } from './store'
 import filterThreads from '@/utils/filter-threads'
 import { type useSearchParams } from 'next/navigation'
+import { getAllUsers } from './userSlice'
 
 export const getAllThreads = createAsyncThunk<Threads>(
   'threads/getAllThreads',
-  async (_, { dispatch, fulfillWithValue, rejectWithValue }) => {
+  async (_, { getState, dispatch, fulfillWithValue, rejectWithValue }) => {
     try {
       dispatch(showLoading('threads/getAllThreads'))
+
+      const { type } = await dispatch(getAllUsers())
+      if (!type.endsWith('fulfilled'))
+        throw new Error('Failed to get all users!')
+
+      const allUsers = (getState() as RootState).users.allUsers
+
       const {
         data: {
           data: { threads },
         },
       }: { data: { data: { threads: Threads } } } = await api.get('/threads')
+
+      threads.forEach((thread) => {
+        thread.owner = allUsers.find((user) => user.id === thread.ownerId)
+      })
 
       return fulfillWithValue(threads)
     } catch (error: any) {
@@ -42,6 +54,7 @@ export const getThreads = createAsyncThunk<
   ) => {
     try {
       dispatch(showLoading('threads/getThreads'))
+      await new Promise((resolve) => setTimeout(resolve, 4000))
       await dispatch(getAllThreads())
       const threads = filterThreads(
         (getState() as RootState).threads.allThreads,

@@ -19,8 +19,9 @@ import xss from 'xss'
 import VoteThreadButton from '@/components/home/vote-thread-button'
 import CommentButton from '@/components/home/comment-button'
 import { useSearchParams } from 'next/navigation'
+import Image from 'next/image'
 
-export default function HomePage() {
+export default function Page() {
   const threads = useAppSelector((state) => state.threads)
   const isLoading = useAppSelector(
     (states) => states.loadingBar['threads/getThreads']
@@ -40,6 +41,18 @@ export default function HomePage() {
         <Card key={thread.id} className="relative rounded-none">
           <LoadingBar scope={`threads/voteThread/${thread.id}`} />
           <CardHeader>
+            <div className="flex flex-row items-center gap-4 pb-4">
+              <Image
+                unoptimized
+                priority
+                src={thread.owner?.avatar ?? ''}
+                alt={thread.owner?.name ?? ''}
+                width={0}
+                height={0}
+                className="rounded-full size-8"
+              />
+              <span className="font-semibold">{thread.owner?.name ?? ''}</span>
+            </div>
             <CardTitle>
               <Link href={`/threads/${thread.id}`}>{thread.title}</Link>
             </CardTitle>
