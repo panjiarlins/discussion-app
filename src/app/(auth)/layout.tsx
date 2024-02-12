@@ -9,7 +9,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const router = useRouter()
   const { data } = useSession()
 
-  if (data) return null
+  if (data) {
+    router.push('/home')
+    return
+  }
 
   return (
     <main className="container flex flex-col items-center justify-center gap-8 py-10 lg:flex-row lg:gap-20 lg:py-20">

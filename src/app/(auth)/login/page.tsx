@@ -15,7 +15,6 @@ import {
 import { Input } from '@/components/ui/input'
 import Link from 'next/link'
 import { signIn } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { useCallback } from 'react'
 
@@ -25,8 +24,6 @@ const formSchema = z.object({
 })
 
 export default function Page() {
-  const router = useRouter()
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -51,11 +48,10 @@ export default function Page() {
       } else {
         form.reset()
         toast.success('Login Successful!', { id: toastId, duration: 4000 })
-        router.refresh()
-        router.replace('/home')
+        window.location.reload()
       }
     },
-    [form, router]
+    [form]
   )
 
   return (
