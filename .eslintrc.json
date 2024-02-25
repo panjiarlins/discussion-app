@@ -8,7 +8,9 @@
     "next/core-web-vitals",
     "plugin:react/recommended",
     "standard-with-typescript",
-    "prettier"
+    "prettier",
+    "plugin:testing-library/react",
+    "plugin:jest-dom/recommended"
   ],
   "overrides": [],
   "parserOptions": {
