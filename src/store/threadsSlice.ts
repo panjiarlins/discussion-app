@@ -1,6 +1,6 @@
 import api from '@/lib/api'
 import { type ThreadVote, type Threads } from '@/types/threads'
-import { getErrorMessage } from '@/utils/error-handler'
+import getErrorMessage from '@/utils/get-error-message'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getSession } from 'next-auth/react'
 import { hideLoading, showLoading } from 'react-redux-loading-bar'

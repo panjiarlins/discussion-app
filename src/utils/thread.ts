@@ -4,7 +4,7 @@ import { action, authAction } from '@/lib/safe-action'
 import { type ThreadDetail } from '@/types/threads'
 import { revalidateTag } from 'next/cache'
 import { z } from 'zod'
-import { getErrorMessage } from './error-handler'
+import getErrorMessage from './get-error-message'
 
 export const getThreadDetail = action(
   z.object({ threadId: z.string() }),
