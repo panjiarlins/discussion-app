@@ -1,6 +1,6 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { loadingBarReducer } from 'react-redux-loading-bar'
-import usersSlice from './userSlice'
+import usersSlice from './usersSlice'
 import threadsSlice from './threadsSlice'
 
 export const rootReducer = combineReducers({

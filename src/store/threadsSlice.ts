@@ -8,7 +8,7 @@ import { toast } from 'sonner'
 import { type RootState } from './store'
 import filterThreads from '@/utils/filter-threads'
 import { type useSearchParams } from 'next/navigation'
-import { getAllUsers } from './userSlice'
+import { getAllUsers } from './usersSlice'
 
 export const getAllThreads = createAsyncThunk<Threads>(
   'threads/getAllThreads',
