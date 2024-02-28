@@ -1,4 +1,8 @@
-const users = {
+import { type Users } from '@/types/users'
+
+const users: {
+  data: { status: string; message: string; data: { users: Users } }
+} = {
   data: {
     status: 'success',
     message: 'ok',

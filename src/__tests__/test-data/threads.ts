@@ -1,4 +1,8 @@
-const threads = {
+import { type Threads } from '@/types/threads'
+
+const threads: {
+  data: { status: string; message: string; data: { threads: Threads } }
+} = {
   data: {
     status: 'success',
     message: 'ok',
