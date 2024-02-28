@@ -1,4 +1,4 @@
-import users from '@/__tests__/test-data/users'
+import users from '@/test-data/users'
 import { getAllUsers } from './usersSlice'
 import { setupStore } from './store'
 import { hideLoading, showLoading } from 'react-redux-loading-bar'

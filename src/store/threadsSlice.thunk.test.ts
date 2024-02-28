@@ -7,11 +7,11 @@ import {
 } from './threadsSlice'
 import { hideLoading, showLoading } from 'react-redux-loading-bar'
 import api from '@/lib/api'
-import users from '@/__tests__/test-data/users'
-import threads from '@/__tests__/test-data/threads'
-import allThreads from '@/__tests__/test-data/allThreads'
+import users from '@/test-data/users'
+import threads from '@/test-data/threads'
+import newThread from '@/test-data/newThread'
+import allThreads from '@/test-data/allThreads'
 import filterThreads from '@/utils/filter-threads'
-import newThread from '@/__tests__/test-data/newThread'
 import { getSession } from 'next-auth/react'
 
 // Mocking API
