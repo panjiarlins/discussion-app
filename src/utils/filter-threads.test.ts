@@ -7,7 +7,7 @@ import filterThreads from './filter-threads'
  * - should filter threads by category
  * - should filter threads by both search query and category
  */
-describe('filterThreads', () => {
+describe('filterThreads function', () => {
   const threads: Threads = [
     {
       id: '1',

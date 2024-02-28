@@ -28,11 +28,12 @@ export const getAllThreads = createAsyncThunk<Threads>(
         },
       }: { data: { data: { threads: Threads } } } = await api.get('/threads')
 
-      threads.forEach((thread) => {
+      const allThreads: Threads = JSON.parse(JSON.stringify(threads))
+      allThreads.forEach((thread) => {
         thread.owner = allUsers.find((user) => user.id === thread.ownerId)
       })
 
-      return fulfillWithValue(threads)
+      return fulfillWithValue(allThreads)
     } catch (error: any) {
       const message = await getErrorMessage(error)
       toast.error(message)
@@ -45,7 +46,7 @@ export const getAllThreads = createAsyncThunk<Threads>(
 
 export const getThreads = createAsyncThunk<
   Threads,
-  { searchParams: ReturnType<typeof useSearchParams> }
+  { searchParams: ReturnType<typeof useSearchParams> | URLSearchParams }
 >(
   'threads/getThreads',
   async (
@@ -125,7 +126,7 @@ export const createThread = createAsyncThunk<
     title: string
     body: string
     category?: string
-    searchParams: ReturnType<typeof useSearchParams>
+    searchParams: ReturnType<typeof useSearchParams> | URLSearchParams
   }
 >(
   'threads/createThread',

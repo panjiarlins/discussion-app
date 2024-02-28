@@ -6,7 +6,7 @@ import getErrorMessage from './get-error-message'
  * - should return error message from AxiosError
  * - should return error message from generic error
  */
-describe('getErrorMessage', () => {
+describe('getErrorMessage function', () => {
   it('should return error message from AxiosError', async () => {
     const error = new AxiosError(undefined, undefined, undefined, undefined, {
       data: { message: 'Test error' },
