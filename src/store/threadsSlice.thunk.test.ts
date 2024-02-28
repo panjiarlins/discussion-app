@@ -14,7 +14,7 @@ import allThreads from '@/test-data/allThreads'
 import filterThreads from '@/utils/filter-threads'
 import { getSession } from 'next-auth/react'
 
-// Mocking API
+// create mock API
 jest.mock('../lib/api', () => ({
   ...jest.requireActual('../lib/api'),
   get: jest.fn(async (url: string) => {

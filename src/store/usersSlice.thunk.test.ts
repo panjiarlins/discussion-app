@@ -4,7 +4,7 @@ import { setupStore } from './store'
 import { hideLoading, showLoading } from 'react-redux-loading-bar'
 import api from '@/lib/api'
 
-// Mocking API
+// create mock API
 jest.mock('../lib/api', () => ({
   ...jest.requireActual('../lib/api'),
   get: jest.fn(async (url: string) => {
