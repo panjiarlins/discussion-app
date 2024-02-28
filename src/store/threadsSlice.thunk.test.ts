@@ -1,5 +1,10 @@
 import { setupStore } from './store'
-import { createThread, getAllThreads, getThreads } from './threadsSlice'
+import {
+  createThread,
+  getAllThreads,
+  getThreads,
+  voteThread,
+} from './threadsSlice'
 import { hideLoading, showLoading } from 'react-redux-loading-bar'
 import api from '@/lib/api'
 import users from '@/__tests__/test-data/users'
@@ -142,6 +147,22 @@ describe('getThreads thunk', () => {
     expect(result.payload).toEqual(
       filterThreads(store.getState().threads.allThreads, searchParams)
     )
+  })
+})
+
+/**
+ * voteThread thunk
+ * - should create action type correctly
+ */
+describe('voteThread thunk', () => {
+  const actionType = 'threads/voteThread'
+
+  it('should create action type correctly', () => {
+    const { typePrefix, fulfilled, pending, rejected } = voteThread
+    expect(typePrefix).toBe(actionType)
+    expect(fulfilled.type).toBe(`${actionType}/fulfilled`)
+    expect(pending.type).toBe(`${actionType}/pending`)
+    expect(rejected.type).toBe(`${actionType}/rejected`)
   })
 })
 
