@@ -1,12 +1,14 @@
 import { setupStore } from './store'
 import api from '@/lib/api'
 import threadsSlice, {
+  createThread,
   getAllThreads,
   getThreads,
   voteThread,
 } from './threadsSlice'
 import users from '@/test-data/users'
 import threads from '@/test-data/threads'
+import newThread from '@/test-data/newThread'
 import allThreads from '@/test-data/allThreads'
 import {
   downVoteData,
@@ -31,6 +33,11 @@ jest.mock('../lib/api', () => ({
         return await Promise.resolve(upVoteResponse)
       if (url === `/threads/${upVoteData.threadId}/down-vote`)
         return await Promise.resolve(downVoteResponse)
+      if (url === '/threads') {
+        const thread: typeof newThread = JSON.parse(JSON.stringify(newThread))
+        thread.data.data.thread = { ...thread.data.data.thread, ...data }
+        return await Promise.resolve(thread)
+      }
     }
   ),
 }))
@@ -141,6 +148,46 @@ describe('threadsSlice reducer with voteThread thunk', () => {
 
     expect(store.getState().threads.threads[downVoteData.threadIndex]).toEqual(
       downVoteData.threadResult
+    )
+  })
+})
+
+/**
+ * threadsSlice reducer with createThread thunk
+ * - should return correct state when createThread success
+ * - should return correct state when createThread failed
+ */
+describe('threadsSlice reducer with createThread thunk', () => {
+  it('should return correct state when createThread success', async () => {
+    const store = setupStore()
+
+    const thunkFunction = createThread({
+      searchParams: new URLSearchParams(),
+      title: newThread.data.data.thread.title,
+      body: newThread.data.data.thread.body,
+      category: newThread.data.data.thread.category,
+    })
+    await thunkFunction(store.dispatch, () => store.getState(), undefined)
+
+    expect(store.getState().threads.allThreads[0]).toEqual(
+      newThread.data.data.thread
+    )
+  })
+
+  it('should return correct state when createThread failed', async () => {
+    const store = setupStore()
+    jest.spyOn(api, 'post').mockRejectedValueOnce(new Error('error'))
+
+    const thunkFunction = createThread({
+      searchParams: new URLSearchParams(),
+      title: newThread.data.data.thread.title,
+      body: newThread.data.data.thread.body,
+      category: newThread.data.data.thread.category,
+    })
+    await thunkFunction(store.dispatch, () => store.getState(), undefined)
+
+    expect(store.getState().threads.allThreads).toEqual(
+      threadsSlice.getInitialState().allThreads
     )
   })
 })
