@@ -1,6 +1,6 @@
 import { setupStore } from './store'
 import api from '@/lib/api'
-import threadsSlice, { getAllThreads } from './threadsSlice'
+import threadsSlice, { getAllThreads, getThreads } from './threadsSlice'
 import users from '@/test-data/users'
 import threads from '@/test-data/threads'
 import allThreads from '@/test-data/allThreads'
@@ -43,6 +43,36 @@ describe('threadsSlice reducer with getAllThreads thunk', () => {
 
     expect(store.getState().threads.allThreads).toEqual(
       threadsSlice.getInitialState().allThreads
+    )
+  })
+})
+
+/**
+ * threadsSlice reducer with getThreads thunk
+ * - should return correct state when data fetching success
+ * - should return correct state when data fetching failed
+ */
+describe('threadsSlice reducer with getThreads thunk', () => {
+  it('should return correct state when data fetching success', async () => {
+    const store = setupStore()
+    const searchParams = new URLSearchParams()
+
+    const thunkFunction = getThreads({ searchParams })
+    await thunkFunction(store.dispatch, () => store.getState(), undefined)
+
+    expect(store.getState().threads.threads).toEqual(threads.data.data.threads)
+  })
+
+  it('should return correct state when data fetching failed', async () => {
+    const store = setupStore()
+    const searchParams = new URLSearchParams()
+    jest.spyOn(api, 'get').mockRejectedValueOnce(new Error('error'))
+
+    const thunkFunction = getThreads({ searchParams })
+    await thunkFunction(store.dispatch, () => store.getState(), undefined)
+
+    expect(store.getState().threads.threads).toEqual(
+      threadsSlice.getInitialState().threads
     )
   })
 })
