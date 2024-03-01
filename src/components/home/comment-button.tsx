@@ -13,12 +13,12 @@ export default function CommentButton({
   return (
     <Button
       asChild
+      role="button"
       variant="ghost"
       className="w-24 space-x-1 rounded-full"
-      type="button"
     >
       <Link href={`/threads/${threadId}#comments`}>
-        <MessageCircleMore className="size-6 stroke-primary" />
+        <MessageCircleMore role="img" className="size-6 stroke-primary" />
         <span>{totalComments}</span>
       </Link>
     </Button>
