@@ -31,7 +31,7 @@ export default async function Comments({
                   alt={comment.owner.name}
                   width={0}
                   height={0}
-                  className="rounded-full size-8"
+                  className="size-8 rounded-full"
                 />
                 <span className="font-semibold">{comment.owner.name}</span>
               </span>

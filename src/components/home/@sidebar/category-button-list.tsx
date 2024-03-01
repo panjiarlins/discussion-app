@@ -16,7 +16,7 @@ export default function CategoryButtonList() {
   )
 
   return (
-    <div className="flex flex-row flex-wrap gap-2 overflow-auto max-h-32 lg:max-h-96">
+    <div className="flex max-h-32 flex-row flex-wrap gap-2 overflow-auto lg:max-h-96">
       <Button
         onClick={() => {
           const params = new URLSearchParams(searchParams.toString())

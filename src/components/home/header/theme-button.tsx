@@ -26,8 +26,8 @@ export default function ThemeButton({
           size="icon"
           className={cn('group', className)}
         >
-          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 group-hover:rotate-[360deg] duration-500" />
-          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 group-hover:rotate-[360deg] duration-500" />
+          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all duration-500 group-hover:rotate-[360deg] dark:-rotate-90 dark:scale-0" />
+          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all duration-500 group-hover:rotate-[360deg] dark:rotate-0 dark:scale-100" />
           <span className="sr-only">Theme Button</span>
         </Button>
       </DropdownMenuTrigger>

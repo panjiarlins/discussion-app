@@ -33,7 +33,7 @@ export default function SearchInput() {
           defaultValue={searchParams.get('q') ?? ''}
           type="search"
           placeholder="Search"
-          className="bg-transparent outline-none size-full placeholder:text-muted-foreground"
+          className="size-full bg-transparent outline-none placeholder:text-muted-foreground"
         />
       </label>
     </Button>

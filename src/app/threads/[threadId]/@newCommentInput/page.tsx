@@ -42,10 +42,7 @@ const formSchema = z.object({
   content: z.string().refine(
     (val) => {
       const plainText = getPlainText(val)
-      const result = z
-        .string()
-        .min(1)
-        .safeParse(plainText?.trim())
+      const result = z.string().min(1).safeParse(plainText?.trim())
       return result.success
     },
     { message: 'Text is too short' }
@@ -67,8 +64,8 @@ export default function NewCommentInput({
         ssr: false,
         loading: () => (
           <div className="space-y-1">
-            <Skeleton className="w-full h-8 rounded-none" />
-            <Skeleton className="w-full h-12 rounded-none" />
+            <Skeleton className="h-8 w-full rounded-none" />
+            <Skeleton className="h-12 w-full rounded-none" />
           </div>
         ),
       }),
@@ -119,15 +116,15 @@ export default function NewCommentInput({
                   <FormControl>
                     <ReactQuill
                       className={`
-                        [&_.ql-toolbar]:!border
-                        [&_.ql-toolbar]:!border-input
-                        [&_.ql-toolbar]:!bg-background
-                        [&_.ql-toolbar]:!ring-offset-background
+                        [&_.ql-blank]:before:!text-muted-foreground
                         [&_.ql-container]:!border
                         [&_.ql-container]:!border-input
                         [&_.ql-container]:!bg-background
                         [&_.ql-container]:!ring-offset-background
-                        [&_.ql-blank]:before:!text-muted-foreground
+                        [&_.ql-toolbar]:!border
+                        [&_.ql-toolbar]:!border-input
+                        [&_.ql-toolbar]:!bg-background
+                        [&_.ql-toolbar]:!ring-offset-background
                       `}
                       placeholder="Your comment...."
                       theme="snow"

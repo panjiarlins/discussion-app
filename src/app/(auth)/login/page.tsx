@@ -95,14 +95,14 @@ export default function Page() {
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full font-semibold rounded-full">
+          <Button type="submit" className="w-full rounded-full font-semibold">
             Log in
           </Button>
         </form>
       </Form>
       <div className="mt-16 space-y-4">
         <div className="text-xl font-bold">Don&apos;t have an account?</div>
-        <Button className="w-full font-semibold rounded-full" asChild>
+        <Button className="w-full rounded-full font-semibold" asChild>
           <Link href="/register">Sign up</Link>
         </Button>
       </div>

@@ -23,7 +23,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className="scroll-smooth">
       <body
         className={cn(
-          'min-w-[280px] min-h-screen antialiased mx-auto',
+          'mx-auto min-h-screen min-w-[280px] antialiased',
           quicksand.className
         )}
       >

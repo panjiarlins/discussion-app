@@ -20,7 +20,7 @@ export default async function Header() {
         alt="logo"
         width={64}
         height={64}
-        className="self-center mt-1 mb-6 rounded-full"
+        className="mb-6 mt-1 self-center rounded-full"
       />
       <HomeButton />
 
@@ -33,7 +33,7 @@ export default async function Header() {
       ) : (
         <LoginButton />
       )}
-      <ThemeButton className="self-center mt-6 mb-1 rounded-full" />
+      <ThemeButton className="mb-1 mt-6 self-center rounded-full" />
     </header>
   )
 }

@@ -41,10 +41,10 @@ export default function HeaderMenuButton({
             size="icon"
             variant="ghost"
             className={cn(
-              'flex flex-row gap-4 rounded-full xl:size-auto xl:py-2 xl:px-4',
+              'flex flex-row gap-4 rounded-full xl:size-auto xl:px-4 xl:py-2',
               isBold
-                ? '[&>svg]:stroke-2 [&>span]:font-extrabold'
-                : '[&>svg]:stroke-1 [&>span]:font-medium'
+                ? '[&>span]:font-extrabold [&>svg]:stroke-2'
+                : '[&>span]:font-medium [&>svg]:stroke-1'
             )}
           >
             {onClick ? (
