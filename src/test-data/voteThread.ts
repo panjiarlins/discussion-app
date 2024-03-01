@@ -8,7 +8,8 @@ export const upVoteData = {
   threadIndex: 0,
   threadId: allThreads[0].id,
   userId: users.data.data.users[0].id,
-  threadResult: {
+  threadBeforeVote: allThreads[0],
+  threadAfterVote: {
     ...allThreads[0],
     upVotesBy: [...allThreads[0].upVotesBy, users.data.data.users[0].id],
   } satisfies Threads[number],
@@ -37,7 +38,8 @@ export const downVoteData = {
   threadIndex: 0,
   threadId: allThreads[0].id,
   userId: users.data.data.users[0].id,
-  threadResult: {
+  threadBeforeVote: allThreads[0],
+  threadAfterVote: {
     ...allThreads[0],
     downVotesBy: [...allThreads[0].downVotesBy, users.data.data.users[0].id],
   } satisfies Threads[number],

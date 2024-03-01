@@ -13,6 +13,7 @@ export default function CommentButton({
   return (
     <Button
       asChild
+      aria-label="Comments"
       role="button"
       variant="ghost"
       className="w-24 space-x-1 rounded-full"

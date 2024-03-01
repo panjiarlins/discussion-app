@@ -2,10 +2,10 @@ import { render, screen, within } from '@testing-library/react'
 import CommentButton from './comment-button'
 
 /**
- * CommentButton component
+ * home/CommentButton component
  * - should render correctly
  */
-describe('CommentButton component', () => {
+describe('home/CommentButton component', () => {
   it('should render correctly', async () => {
     const threadId = '1'
     const totalComments = 2

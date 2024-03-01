@@ -90,7 +90,7 @@ describe('threadsSlice reducer with voteThread thunk', () => {
     await thunkFunction(store.dispatch, () => store.getState(), undefined)
 
     expect(store.getState().threads.threads[upVoteData.threadIndex]).toEqual(
-      upVoteData.threadResult
+      upVoteData.threadAfterVote
     )
   })
 
@@ -109,7 +109,7 @@ describe('threadsSlice reducer with voteThread thunk', () => {
     await thunkFunction(store.dispatch, () => store.getState(), undefined)
 
     expect(store.getState().threads.threads[downVoteData.threadIndex]).toEqual(
-      downVoteData.threadResult
+      downVoteData.threadAfterVote
     )
   })
 })

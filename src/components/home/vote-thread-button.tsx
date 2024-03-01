@@ -59,6 +59,7 @@ export default function VoteThreadButton({
 
   return (
     <Button
+      aria-label={`${votesType} thread`}
       onClick={handleVote}
       variant="ghost"
       className="w-24 space-x-1 rounded-full"
@@ -69,6 +70,7 @@ export default function VoteThreadButton({
     >
       {votesType === 'up-vote' && (
         <ArrowBigUp
+          role="img"
           className={`size-6 stroke-primary ${
             optimisticUserVote.isVotedByUser
               ? 'fill-primary'
@@ -78,6 +80,7 @@ export default function VoteThreadButton({
       )}
       {votesType === 'down-vote' && (
         <ArrowBigDown
+          role="img"
           className={`size-6 stroke-primary ${
             optimisticUserVote.isVotedByUser
               ? 'fill-primary'
