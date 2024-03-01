@@ -4,14 +4,6 @@ import { getAllUsers } from './usersSlice'
 import { fireEvent, screen } from '@testing-library/react'
 import users from '@/test-data/users'
 
-// create mock API
-jest.mock('../lib/api', () => ({
-  ...jest.requireActual('../lib/api'),
-  get: jest.fn(async (url: string) => {
-    if (url === '/users') return await Promise.resolve(users)
-  }),
-}))
-
 /**
  * usersSlice - integration tests with components
  * - should getAllUsers correctly

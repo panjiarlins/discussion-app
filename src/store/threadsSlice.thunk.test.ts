@@ -7,40 +7,10 @@ import {
 } from './threadsSlice'
 import { hideLoading, showLoading } from 'react-redux-loading-bar'
 import api from '@/lib/api'
-import users from '@/test-data/users'
-import threads from '@/test-data/threads'
 import newThread from '@/test-data/newThread'
 import allThreads from '@/test-data/allThreads'
 import filterThreads from '@/utils/filter-threads'
 import { getSession } from 'next-auth/react'
-
-// create mock API
-jest.mock('../lib/api', () => ({
-  ...jest.requireActual('../lib/api'),
-  get: jest.fn(async (url: string) => {
-    if (url === '/users') return await Promise.resolve(users)
-    if (url === '/threads') return await Promise.resolve(threads)
-  }),
-  post: jest.fn(
-    async (
-      url: string,
-      data: { title: string; body: string; category: string }
-    ) => {
-      if (url === '/threads') {
-        const thread: typeof newThread = JSON.parse(JSON.stringify(newThread))
-        thread.data.data.thread = { ...thread.data.data.thread, ...data }
-        return await Promise.resolve(thread)
-      }
-    }
-  ),
-}))
-
-jest.mock('next-auth/react')
-
-afterEach(() => {
-  jest.clearAllMocks()
-  jest.restoreAllMocks()
-})
 
 /**
  * getAllThreads thunk

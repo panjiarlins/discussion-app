@@ -4,19 +4,6 @@ import { setupStore } from './store'
 import { hideLoading, showLoading } from 'react-redux-loading-bar'
 import api from '@/lib/api'
 
-// create mock API
-jest.mock('../lib/api', () => ({
-  ...jest.requireActual('../lib/api'),
-  get: jest.fn(async (url: string) => {
-    if (url === '/users') return await Promise.resolve(users)
-  }),
-}))
-
-afterEach(() => {
-  jest.clearAllMocks()
-  jest.restoreAllMocks()
-})
-
 /**
  * getAllUsers thunk
  * - should create action type correctly
