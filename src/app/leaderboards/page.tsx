@@ -19,16 +19,16 @@ export default async function Page() {
     await api.get('/leaderboards')
 
   return (
-    <div className="m-4 mx-auto rounded-lg bg-secondary w-fit md:min-w-[60%]">
-      <div className="p-8 pb-4 text-2xl font-bold text-center">
+    <div className="m-4 mx-auto w-fit rounded-lg bg-secondary md:min-w-[60%]">
+      <div className="p-8 pb-4 text-center text-2xl font-bold">
         Active User Leaderboard
       </div>
       <div className="p-4">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="text-lg text-center">User</TableHead>
-              <TableHead className="text-lg text-center">Score</TableHead>
+              <TableHead className="text-center text-lg">User</TableHead>
+              <TableHead className="text-center text-lg">Score</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -42,7 +42,7 @@ export default async function Page() {
                     alt=""
                     width={0}
                     height={0}
-                    className="rounded-full size-8"
+                    className="size-8 rounded-full"
                   />
                   <span className="">{leaderboard.user.name}</span>
                 </TableCell>

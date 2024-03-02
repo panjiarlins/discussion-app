@@ -38,7 +38,7 @@ export default function Page() {
 
   if (threads.threads.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-20">
+      <div className="flex h-20 flex-col items-center justify-center">
         No Threads Found
       </div>
     )
@@ -60,7 +60,7 @@ export default function Page() {
                     alt={thread.owner?.name ?? ''}
                     width={0}
                     height={0}
-                    className="rounded-full size-8"
+                    className="size-8 rounded-full"
                   />
                   <span className="font-semibold">
                     {thread.owner?.name ?? ''}
@@ -70,7 +70,7 @@ export default function Page() {
                 <Button
                   asChild
                   size="sm"
-                  className="rounded-full animate-pulse"
+                  className="animate-pulse rounded-full"
                 >
                   <div className="flex flex-row items-center gap-2">
                     <BellRing className="size-6" />

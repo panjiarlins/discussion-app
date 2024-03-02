@@ -25,15 +25,16 @@ export default function SearchInput() {
   return (
     <Button asChild variant="secondary" className="space-x-4 rounded-full">
       <label>
-        <Search />
+        <Search role="img" />
         <input
+          aria-label="Search"
           onChange={(event) => {
             setText(event.target.value)
           }}
           defaultValue={searchParams.get('q') ?? ''}
           type="search"
           placeholder="Search"
-          className="bg-transparent outline-none size-full placeholder:text-muted-foreground"
+          className="size-full bg-transparent outline-none placeholder:text-muted-foreground"
         />
       </label>
     </Button>

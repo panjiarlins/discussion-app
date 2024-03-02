@@ -16,8 +16,9 @@ export default function CategoryButtonList() {
   )
 
   return (
-    <div className="flex flex-row flex-wrap gap-2 overflow-auto max-h-32 lg:max-h-96">
+    <div className="flex max-h-32 flex-row flex-wrap gap-2 overflow-auto lg:max-h-96">
       <Button
+        aria-label="All categories"
         onClick={() => {
           const params = new URLSearchParams(searchParams.toString())
           params.delete('category')
@@ -32,6 +33,7 @@ export default function CategoryButtonList() {
       {categories.map((category) => (
         <Button
           key={category}
+          aria-label={`Category: ${category}`}
           onClick={() => {
             const params = new URLSearchParams(searchParams.toString())
             params.set('category', category)
@@ -43,7 +45,7 @@ export default function CategoryButtonList() {
           size="sm"
           type="button"
         >
-          #{category}
+          {`#${category}`}
         </Button>
       ))}
     </div>

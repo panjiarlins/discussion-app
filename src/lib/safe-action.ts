@@ -1,5 +1,5 @@
 import { options } from '@/app/api/auth/[...nextauth]/options'
-import { getErrorMessage } from '@/utils/error-handler'
+import getErrorMessage from '@/utils/get-error-message'
 import { getServerSession } from 'next-auth'
 import { createSafeActionClient } from 'next-safe-action'
 

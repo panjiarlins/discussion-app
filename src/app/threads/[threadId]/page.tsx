@@ -37,7 +37,7 @@ export default async function Page({
             alt={thread.owner.name}
             width={0}
             height={0}
-            className="rounded-full size-8"
+            className="size-8 rounded-full"
           />
           <span className="font-semibold">{thread.owner.name}</span>
         </div>

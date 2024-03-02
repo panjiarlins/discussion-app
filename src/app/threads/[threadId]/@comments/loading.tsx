@@ -9,18 +9,18 @@ export default function Loading() {
           <CardHeader>
             <div className="flex flex-row items-center justify-between">
               <span className="flex flex-row items-center gap-4">
-                <Skeleton className="rounded-full size-8" />
-                <Skeleton className="w-20 h-4" />
+                <Skeleton className="size-8 rounded-full" />
+                <Skeleton className="h-4 w-20" />
               </span>
-              <Skeleton className="w-[5%] h-4" />
+              <Skeleton className="h-4 w-[5%]" />
             </div>
           </CardHeader>
           <CardContent>
-            <Skeleton className="w-full h-16" />
+            <Skeleton className="h-16 w-full" />
           </CardContent>
           <CardFooter className="flex flex-row flex-wrap items-center">
-            <Skeleton className="w-20 h-8 rounded-full" />
-            <Skeleton className="w-20 h-8 rounded-full" />
+            <Skeleton className="h-8 w-20 rounded-full" />
+            <Skeleton className="h-8 w-20 rounded-full" />
           </CardFooter>
         </Card>
       ))}

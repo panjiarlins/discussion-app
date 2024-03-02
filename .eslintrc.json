@@ -8,9 +8,18 @@
     "next/core-web-vitals",
     "plugin:react/recommended",
     "standard-with-typescript",
-    "prettier"
+    "prettier",
+    "plugin:testing-library/react",
+    "plugin:jest-dom/recommended"
   ],
-  "overrides": [],
+  "overrides": [
+    {
+      "files": ["*.test.ts", "*.test.tsx"],
+      "rules": {
+        "@typescript-eslint/unbound-method": "off"
+      }
+    }
+  ],
   "parserOptions": {
     "ecmaVersion": "latest"
   },

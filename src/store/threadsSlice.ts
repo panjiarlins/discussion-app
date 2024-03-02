@@ -1,6 +1,6 @@
 import api from '@/lib/api'
 import { type ThreadVote, type Threads } from '@/types/threads'
-import { getErrorMessage } from '@/utils/error-handler'
+import getErrorMessage from '@/utils/get-error-message'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getSession } from 'next-auth/react'
 import { hideLoading, showLoading } from 'react-redux-loading-bar'
@@ -8,7 +8,7 @@ import { toast } from 'sonner'
 import { type RootState } from './store'
 import filterThreads from '@/utils/filter-threads'
 import { type useSearchParams } from 'next/navigation'
-import { getAllUsers } from './userSlice'
+import { getAllUsers } from './usersSlice'
 
 export const getAllThreads = createAsyncThunk<Threads>(
   'threads/getAllThreads',
@@ -28,11 +28,12 @@ export const getAllThreads = createAsyncThunk<Threads>(
         },
       }: { data: { data: { threads: Threads } } } = await api.get('/threads')
 
-      threads.forEach((thread) => {
+      const allThreads: Threads = JSON.parse(JSON.stringify(threads))
+      allThreads.forEach((thread) => {
         thread.owner = allUsers.find((user) => user.id === thread.ownerId)
       })
 
-      return fulfillWithValue(threads)
+      return fulfillWithValue(allThreads)
     } catch (error: any) {
       const message = await getErrorMessage(error)
       toast.error(message)
@@ -45,7 +46,7 @@ export const getAllThreads = createAsyncThunk<Threads>(
 
 export const getThreads = createAsyncThunk<
   Threads,
-  { searchParams: ReturnType<typeof useSearchParams> }
+  { searchParams: ReturnType<typeof useSearchParams> | URLSearchParams }
 >(
   'threads/getThreads',
   async (
@@ -75,7 +76,7 @@ export const voteThread = createAsyncThunk<
   {
     threadId: string
     voteType: 'up-vote' | 'down-vote' | 'neutral-vote'
-    setOptimisticUserVote: React.Dispatch<
+    setOptimisticUserVote?: React.Dispatch<
       React.SetStateAction<{
         isVotedByUser: boolean
         pending: boolean
@@ -89,11 +90,12 @@ export const voteThread = createAsyncThunk<
     { dispatch, fulfillWithValue, rejectWithValue }
   ) => {
     try {
-      setOptimisticUserVote((prev) => ({
-        isVotedByUser: !prev.isVotedByUser,
-        pending: true,
-      }))
       dispatch(showLoading(`threads/voteThread/${threadId}`))
+      if (setOptimisticUserVote)
+        setOptimisticUserVote((prev) => ({
+          isVotedByUser: !prev.isVotedByUser,
+          pending: true,
+        }))
       const session = await getSession()
       const { data } = await api.post(
         `/threads/${threadId}/${voteType}`,
@@ -102,19 +104,21 @@ export const voteThread = createAsyncThunk<
       )
       return fulfillWithValue(data.data.vote)
     } catch (error: any) {
-      setOptimisticUserVote((prev) => ({
-        isVotedByUser: !prev.isVotedByUser,
-        pending: false,
-      }))
+      if (setOptimisticUserVote)
+        setOptimisticUserVote((prev) => ({
+          isVotedByUser: !prev.isVotedByUser,
+          pending: false,
+        }))
       const message = await getErrorMessage(error)
       toast.error(message)
       return rejectWithValue(message)
     } finally {
+      if (setOptimisticUserVote)
+        setOptimisticUserVote((prev) => ({
+          ...prev,
+          pending: false,
+        }))
       dispatch(hideLoading(`threads/voteThread/${threadId}`))
-      setOptimisticUserVote((prev) => ({
-        ...prev,
-        pending: false,
-      }))
     }
   }
 )
@@ -125,7 +129,7 @@ export const createThread = createAsyncThunk<
     title: string
     body: string
     category?: string
-    searchParams: ReturnType<typeof useSearchParams>
+    searchParams: ReturnType<typeof useSearchParams> | URLSearchParams
   }
 >(
   'threads/createThread',

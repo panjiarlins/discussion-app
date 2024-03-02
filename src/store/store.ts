@@ -1,17 +1,21 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { loadingBarReducer } from 'react-redux-loading-bar'
-import usersSlice from './userSlice'
+import usersSlice from './usersSlice'
 import threadsSlice from './threadsSlice'
 
-export const store = configureStore({
-  reducer: {
-    loadingBar: loadingBarReducer,
-    users: usersSlice.reducer,
-    threads: threadsSlice.reducer,
-  },
+export const rootReducer = combineReducers({
+  loadingBar: loadingBarReducer,
+  users: usersSlice.reducer,
+  threads: threadsSlice.reducer,
 })
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<typeof store.getState>
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
-export type AppDispatch = typeof store.dispatch
+export function setupStore(preloadedState?: Partial<RootState>) {
+  return configureStore({
+    reducer: rootReducer,
+    preloadedState,
+  })
+}
+
+export type RootState = ReturnType<typeof rootReducer>
+export type AppStore = ReturnType<typeof setupStore>
+export type AppDispatch = AppStore['dispatch']

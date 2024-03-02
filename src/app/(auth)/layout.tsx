@@ -24,7 +24,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           priority
           src={Logo}
           alt="logo"
-          className="rounded-full cursor-pointer w-28 lg:w-80"
+          className="w-28 cursor-pointer rounded-full lg:w-80"
         />
       </section>
       {children}

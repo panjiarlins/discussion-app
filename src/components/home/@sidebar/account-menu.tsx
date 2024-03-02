@@ -18,7 +18,7 @@ export default async function AccountMenu() {
       <PopoverTrigger asChild>
         <Button
           variant="secondary"
-          className="flex flex-row h-16 gap-4 rounded-full w-full"
+          className="flex h-16 w-full flex-row gap-4 rounded-full"
           type="button"
         >
           <Image
@@ -30,14 +30,14 @@ export default async function AccountMenu() {
             height={40}
             className="rounded-full"
           />
-          <div className="flex-1 font-bold text-left truncate">
+          <div className="flex-1 truncate text-left font-bold">
             {session?.user.name}
           </div>
           <MoreHorizontal />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="flex flex-col px-0 overflow-hidden rounded-3xl">
-        <Button variant="ghost" className="font-bold rounded-none">
+      <PopoverContent className="flex flex-col overflow-hidden rounded-3xl px-0">
+        <Button variant="ghost" className="rounded-none font-bold">
           Edit Account
         </Button>
         <LogoutButton />

@@ -3,7 +3,7 @@
 import { action } from '@/lib/safe-action'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
-import { getErrorMessage } from './error-handler'
+import getErrorMessage from './get-error-message'
 
 export const register = action(
   z.object({

@@ -16,7 +16,7 @@ export default async function Layout({
       <div className="flex flex-row sm:container">
         <Header />
         <main className="flex-1 lg:grid lg:grid-cols-4">
-          <section className="lg:hidden max-lg:col-span-4">{sidebar}</section>
+          <section className="max-lg:col-span-4 lg:hidden">{sidebar}</section>
           <section className="lg:col-span-3">
             {newThreadInput}
             {children}
