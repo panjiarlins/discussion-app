@@ -25,8 +25,9 @@ export default function SearchInput() {
   return (
     <Button asChild variant="secondary" className="space-x-4 rounded-full">
       <label>
-        <Search />
+        <Search role="img" />
         <input
+          aria-label="Search"
           onChange={(event) => {
             setText(event.target.value)
           }}
