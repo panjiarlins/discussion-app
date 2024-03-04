@@ -10,7 +10,8 @@
     "standard-with-typescript",
     "prettier",
     "plugin:testing-library/react",
-    "plugin:jest-dom/recommended"
+    "plugin:jest-dom/recommended",
+    "plugin:storybook/recommended"
   ],
   "overrides": [
     {
