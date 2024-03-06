@@ -5,10 +5,13 @@
     "node": true
   },
   "extends": [
-    "next/core-web-vitals",
-    "plugin:react/recommended",
+    "next",
+    "eslint:recommended",
     "standard-with-typescript",
     "prettier",
+    "next/core-web-vitals",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
     "plugin:testing-library/react",
     "plugin:jest-dom/recommended",
     "plugin:storybook/recommended"
@@ -24,7 +27,7 @@
   "parserOptions": {
     "ecmaVersion": "latest"
   },
-  "plugins": ["react"],
+  "plugins": ["react", "react-hooks"],
   "rules": {
     "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
