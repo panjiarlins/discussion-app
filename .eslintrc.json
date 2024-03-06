@@ -2,7 +2,8 @@
   "env": {
     "browser": true,
     "es2021": true,
-    "node": true
+    "node": true,
+    "cypress/globals": true
   },
   "extends": [
     "next",
@@ -14,7 +15,9 @@
     "plugin:react-hooks/recommended",
     "plugin:testing-library/react",
     "plugin:jest-dom/recommended",
-    "plugin:storybook/recommended"
+    "plugin:storybook/recommended",
+    "plugin:cypress/recommended",
+    "plugin:chai-friendly/recommended"
   ],
   "overrides": [
     {
@@ -27,7 +30,7 @@
   "parserOptions": {
     "ecmaVersion": "latest"
   },
-  "plugins": ["react", "react-hooks"],
+  "plugins": ["react", "react-hooks", "cypress", "chai-friendly"],
   "rules": {
     "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
