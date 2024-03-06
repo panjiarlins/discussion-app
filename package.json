@@ -11,6 +11,8 @@
     "prettier": "prettier --write */**/*.{js,jsx,json,ts,tsx,sass,scss,css,md,mdx}",
     "test": "jest",
     "test:watch": "jest --watch",
+    "e2e": "jest --no-watch",
+    "ci:test": "jest --no-watch && start-server-and-test dev http-get://0.0.0.0:3000 e2e",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "prepare": "husky install"
@@ -81,6 +83,7 @@
     "postcss": "^8",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.11",
+    "start-server-and-test": "^2.0.3",
     "storybook": "^7.6.17",
     "tailwindcss": "^3.3.0",
     "ts-node": "^10.9.2",
