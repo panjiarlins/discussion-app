@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'node:23-alpine3.19' 
+            image 'node:23-bookworm-slim' 
             args '-p 3000:3000' 
         }
     }
