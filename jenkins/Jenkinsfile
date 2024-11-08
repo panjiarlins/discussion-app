@@ -9,7 +9,7 @@ pipeline {
         stage('Build & Test') {
             steps {
                 sh 'npm ci'
-                sh 'npm run ci:test'
+                sh 'npm run ci:jenkins-test'
             }
         }
     }
