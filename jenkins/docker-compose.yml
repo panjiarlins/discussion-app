@@ -7,7 +7,9 @@ services:
       - jenkins-docker-certs:/certs/client
       - jenkins-data:/var/jenkins_home
     networks:
-      - jenkins
+      jenkins:
+        aliases:
+          - docker
     ports:
       - '2376:2376'
       - '3000:3000'
