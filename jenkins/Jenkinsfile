@@ -1,17 +1,66 @@
-pipeline {
-    agent {
-        docker {
-            image 'node:lts-slim'
-            args '-p 3000:3000'
+// SCRIPTED PIPELINE
+node {
+    env.NEXT_PUBLIC_BASE_API = 'https://forum-api.dicoding.dev/v1'
+    env.NEXTAUTH_SECRET = 'hMzxv6I31UnuslbQ7aQsooLWw0rVzD+X9Z445egm/68='
+    env.NEXTAUTH_URL = 'http://localhost:3000/api/auth'
+
+    stage('Build') {
+        docker.image('node:lts-alpine').inside('-p 3000:3000') {
+            sh 'npm ci'
+            sh 'npm run build'
         }
     }
+
+    stage('Test') {
+        docker.image('cypress/base:latest').inside {
+            script {
+                // Start server in the background and capture PID
+                env.SERVER_PID = sh(script: 'nohup npm run start & echo $!', returnStdout: true).trim()
+            }
+            sh 'npm run ci:jenkins-test'
+        }
+    }
+}
+
+/* 
+// DECLARATIVE PIPELINE
+pipeline {
+    agent any
+
+    environment {
+        NEXT_PUBLIC_BASE_API = 'https://forum-api.dicoding.dev/v1'
+        NEXTAUTH_SECRET = 'hMzxv6I31UnuslbQ7aQsooLWw0rVzD+X9Z445egm/68='
+        NEXTAUTH_URL = 'http://localhost:3000/api/auth'
+    }
+
     stages {
-        stage('Build & Test') {
+        stage('Build') {
+            agent {
+                docker {
+                    image 'node:lts-alpine'
+                    args '-p 3000:3000'
+                }
+            }
             steps {
-                sh 'sudo apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libnss3 libxss1 libasound2 libxtst6 xauth xvfb' // https://on.cypress.io/required-dependencies
                 sh 'npm ci'
+                sh 'npm run build'   
+            }
+        }
+
+        stage('Test') {
+            agent {
+                docker {
+                    image 'cypress/base:latest'
+                }
+            }
+            steps {
+                script {
+                    // Start server in the background and capture PID
+                    env.SERVER_PID = sh(script: 'nohup npm run start & echo $!', returnStdout: true).trim()
+                }
                 sh 'npm run ci:jenkins-test'
             }
         }
     }
 }
+*/
