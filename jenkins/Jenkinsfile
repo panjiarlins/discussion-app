@@ -6,7 +6,7 @@ node {
 
     stage('Build') {
         docker.image('node:lts-alpine').inside('-p 3000:3000') {
-            sh 'npm ci'
+            sh 'npm install'
             sh 'npm run build'
         }
     }
