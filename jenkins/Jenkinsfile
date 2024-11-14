@@ -32,10 +32,10 @@ node {
         def deployDir = "/home/${serverUser}/discussion-app"
         
         withCredentials([file(credentialsId: 'my-server', variable: 'secretFile')]) {
-            sh "scp -i $secretFile -r .next ${serverUser}@${serverIP}:${deployDir}/.next"
-            sh "scp -i $secretFile package.json ${serverUser}@${serverIP}:${deployDir}"
-            sh "scp -i $secretFile package-lock.json ${serverUser}@${serverIP}:${deployDir}"
-            sh "scp -i $secretFile Dockerfile ${serverUser}@${serverIP}:${deployDir}"
+            sh "scp -i $secretFile -r ./.next ${serverUser}@${serverIP}:${deployDir}"
+            sh "scp -i $secretFile ./package.json ${serverUser}@${serverIP}:${deployDir}"
+            sh "scp -i $secretFile ./package-lock.json ${serverUser}@${serverIP}:${deployDir}"
+            sh "scp -i $secretFile ./Dockerfile ${serverUser}@${serverIP}:${deployDir}"
             sh """
                 ssh -i $secretFile ${serverUser}@${serverIP} "
                     if ! command -v docker &> /dev/null; then
