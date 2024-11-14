@@ -31,14 +31,13 @@ node {
         def serverIP = "ec2-13-215-194-192.ap-southeast-1.compute.amazonaws.com"
         def deployDir = "/home/${serverUser}/discussion-app"
         
-        withCredentials([file(credentialsId: 'my-server', variable: 'secretFile')]) { 
+        withCredentials([file(credentialsId: 'my-server', variable: 'secretFile')]) {
+            sh 'scp -i $secretFile -r .next ${serverUser}@${serverIP}:${deployDir}/.next'
+            sh 'scp -i $secretFile package.json ${serverUser}@${serverIP}:${deployDir}'
+            sh 'scp -i $secretFile package-lock.json ${serverUser}@${serverIP}:${deployDir}'
+            sh 'scp -i $secretFile Dockerfile ${serverUser}@${serverIP}:${deployDir}'
             sh """
-                scp -i ${secretFile} -r .next ${serverUser}@${serverIP}:${deployDir}/.next
-                scp -i ${secretFile} package.json ${serverUser}@${serverIP}:${deployDir}
-                scp -i ${secretFile} package-lock.json ${serverUser}@${serverIP}:${deployDir}
-                scp -i ${secretFile} Dockerfile ${serverUser}@${serverIP}:${deployDir}
-
-                ssh -i ${secretFile} ${serverUser}@${serverIP} "
+                ssh -i $secretFile ${serverUser}@${serverIP} "
                     if ! command -v docker &> /dev/null; then
                         echo 'Docker not found. Installing Docker...'
                         sudo apt update
@@ -48,8 +47,9 @@ node {
                         echo 'Docker is already installed.'
                     fi
                 "
-
-                ssh -i ${secretFile} ${serverUser}@${serverIP} "
+            """
+            sh """
+                ssh -i $secretFile ${serverUser}@${serverIP} "
                     cd ${deployDir} && 
                     docker rm -f discussion-app || true &&
                     docker build -t discussion-app . &&
