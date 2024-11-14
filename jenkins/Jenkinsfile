@@ -59,14 +59,14 @@ node {
                 ssh -i $secretFile ${serverUser}@${serverIP} "
                     cd ${deployDir} &&
 
-                    sudo docker network create discussion-app || true &&
+                    sudo docker network create app-network || true &&
 
                     sudo docker rm -f discussion-app || true &&
                     sudo docker build -t discussion-app . &&
                     sudo docker run -d \
                         --name discussion-app \
                         --restart on-failure \
-                        --network discussion-app \
+                        --network app-network \
                         -p 3000:3000 \
                         -e NEXT_PUBLIC_BASE_API=${env.NEXT_PUBLIC_BASE_API} \
                         -e NEXTAUTH_SECRET=${env.NEXTAUTH_SECRET} \
@@ -77,10 +77,10 @@ node {
                     sudo docker run -d \
                         --name nginx-reverse-proxy \
                         --restart on-failure \
-                        --network discussion-app \
+                        --network app-network \
                         -p 80:80 \
                         -p 443:443 \
-                        -v ./nginx.conf:/etc/nginx/nginx.conf:ro \
+                        -v ./nginx.conf:/etc/nginx/conf.d/default.conf:ro \
                         nginx:latest
                 "
             """
