@@ -5,7 +5,7 @@ FROM  node:lts-alpine
 WORKDIR /app
 
 # Copy files to the current directory
-COPY package*.json .
+COPY package*.json ./
 COPY .next ./.next
 
 # Set the environment
