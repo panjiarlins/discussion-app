@@ -29,15 +29,13 @@ node {
     stage('Deploy') {
         def serverUser = "ubuntu"
         def serverIP = "ec2-13-215-194-192.ap-southeast-1.compute.amazonaws.com"
-        def deployDir = "/home/${serverUser}/discussion-app"
+        def deployDir = "~/discussion-app"
         
         withCredentials([file(credentialsId: 'my-server', variable: 'secretFile')]) {
-            sh "scp -i $secretFile -r ./.next ${serverUser}@${serverIP}:${deployDir}"
-            sh "scp -i $secretFile ./package.json ${serverUser}@${serverIP}:${deployDir}"
-            sh "scp -i $secretFile ./package-lock.json ${serverUser}@${serverIP}:${deployDir}"
-            sh "scp -i $secretFile ./Dockerfile ${serverUser}@${serverIP}:${deployDir}"
+            // Make directory and Install Docker
             sh """
                 ssh -i $secretFile ${serverUser}@${serverIP} "
+                    mkdir -p ${deployDir} &&
                     if ! command -v docker &> /dev/null; then
                         echo 'Docker not found. Installing Docker...'
                         sudo apt update
@@ -48,12 +46,20 @@ node {
                     fi
                 "
             """
+
+            // Copy files to server
+            sh "scp -i $secretFile -r ./.next ${serverUser}@${serverIP}:${deployDir}"
+            sh "scp -i $secretFile ./package.json ${serverUser}@${serverIP}:${deployDir}"
+            sh "scp -i $secretFile ./package-lock.json ${serverUser}@${serverIP}:${deployDir}"
+            sh "scp -i $secretFile ./Dockerfile ${serverUser}@${serverIP}:${deployDir}"
+
+            // Build and Run
             sh """
                 ssh -i $secretFile ${serverUser}@${serverIP} "
-                    cd ${deployDir} && 
-                    docker rm -f discussion-app || true &&
-                    docker build -t discussion-app . &&
-                    docker run -d \
+                    cd ${deployDir} &&
+                    sudo docker rm -f discussion-app || true &&
+                    sudo docker build -t discussion-app . &&
+                    sudo docker run -d \
                         --name discussion-app \
                         --restart on-failure \
                         -p 3000:3000 \
